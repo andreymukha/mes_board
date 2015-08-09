@@ -30,7 +30,16 @@ define('DB_PREF', 'mes_');
  */
 define('THEME', 'templates/default/');
 
-//define('FILES', 'files/');
+/**
+ * Путь к папке с файлами
+ */
+define('FILES', 'files/');
+
+/**
+ * Путь к папке с изображениями
+ */
+define('IMAGES', FILES.'images/');
+
 //define('THUMBNAILS', 'files/images/thumb/');
 //define('IMG_WIDTH', '200');
 //define('PERPAGE', '10');
