@@ -15,9 +15,9 @@
 		<ul>
 			<? if(!empty($user) and is_array($user)): ?>
 				<? if($add_mess): ?>
-					<li><a href="http://board.dev/?action=add_message">Добавить объявление</a></li>
+					<li><a href="?action=add_message">Добавить объявление</a></li>
 				<? endif; ?>
-				<li><a href="http://board.dev/?action=p_mess">Ваши объявления</a></li>
+				<li><a href="?action=p_mess">Ваши объявления</a></li>
 			<? endif; ?>
 			<? if($types and is_array($types)): ?>
 				<? foreach($types as $item): ?>
@@ -40,7 +40,7 @@
 								</strong>
 								<ul>
 									<? foreach($category['parent'] as $p_category_id => $p_category): ?>
-										<li>- <a href="http://board.dev/?action=categories&id=<?=$p_category_id?>"><?=$p_category?></a></li>
+										<li>- <a href="?action=categories&id=<?=$p_category_id?>"><?=$p_category?></a></li>
 									<? endforeach; ?>
 								</ul>
 							<? endif; ?>
