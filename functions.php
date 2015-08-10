@@ -618,10 +618,12 @@ function addMessage($mysql_link, $data, $user) {
 		return setMessage('Ошибка при создании уменьшенной копии изображения, обратитесь к администратору'. 'error');
 	}
 
-	$msg = '';
 
 	//Дополнительные изображения
 	$additional_images = '';
+
+	$msg = '';
+
 	if(!empty($_FILES['additional_img'])){
 		for($i = 0; $i < count($_FILES['additional_img']['name']); $i++){
 			if(empty($_FILES['additional_img']['name'][$i])) continue;
@@ -662,16 +664,17 @@ function addMessage($mysql_link, $data, $user) {
 
 			$additional_images .= $additional_filename.'|';
 		}
-		$additional_images = rtrim($additional_images, '|');
-	}
 
-	if(!empty($msg)) {
-		$_SESSION['msg']['mess']['title'] = $title;
-		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
-		$_SESSION['msg']['mess']['price'] = $price;
-		$_SESSION['msg']['mess']['body'] = $body;
-		return setMessage($msg, 'error');
+		if(!empty($msg)) {
+			$_SESSION['msg']['mess']['title'] = $title;
+			$_SESSION['msg']['mess']['town'] = $town;
+			$_SESSION['msg']['mess']['time'] = $time;
+			$_SESSION['msg']['mess']['price'] = $price;
+			$_SESSION['msg']['mess']['body'] = $body;
+			return setMessage($msg, 'error');
+		}
+
+		$additional_images = rtrim($additional_images, '|');
 	}
 
 	$sql = "INSERT INTO mes_posts (title, body, date, user_id, category_id, type_id, town, img, additional_images, time_over, price) VALUES ('%s', '%s', UNIX_TIMESTAMP(), '%d', '%d', '%d', '%s', '%s', '%s', '%d', '%d')";
@@ -696,14 +699,14 @@ function img_resize($img, $type) {
 	switch($type){
 		case 'jpeg':
 		case 'pjpeg':
-			$img_id = imagecreatefromjpeg(IMAGES.$img);
+			$img_id = imagecreatefromjpeg($img);
 		break;
 		case 'png':
 		case 'xpng':
-			$img_id = imagecreatefrompng(IMAGES.$img);
+			$img_id = imagecreatefrompng($img);
 		break;
 		case 'gif':
-			$img_id = imagecreatefromgif(IMAGES.$img);
+			$img_id = imagecreatefromgif($img);
 		break;
 		default: return FALSE;
 	}
