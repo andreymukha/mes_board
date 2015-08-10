@@ -1,3 +1,3 @@
-<div class="alert <?=$types?>" role="alert">
+<div class="alert <?=$type?>" role="alert">
 	<?=$message?>
 </div>

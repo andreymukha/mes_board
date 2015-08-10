@@ -1,7 +1,7 @@
 <form method="post" enctype="multipart/form-data">
 	<div class="form-group">
 		<label for="mes_title">Название объявления</label>
-		<input class="form-control" name="mes_title" type="text" value="<?=$_SESSION['msg']['message']['title']?>" placeholder="Название"/><br />
+		<input id="mes_title" class="form-control" name="mes_title" type="text" value="<?=$_SESSION['msg']['mess']['title'];?>" placeholder="Название"/><br />
 
 		<div class="radio">
 			<? if(!empty($types) and is_array($types)): ?>
@@ -14,7 +14,7 @@
 		</div>
 
 		<label for="mes_image">Загрузить изображение</label>
-		<input class="mes_image" name="mes_image" type="file" value=""/><br />
+		<input id="mes_image" class="mes_image" name="mes_image" type="file" value=""/><br />
 
 		<!-- Аккордеон для дополнительных изображений -->
 		<div class="panel-group" id="additional_img" role="tablist" aria-multiselectable="true">
@@ -29,14 +29,14 @@
 				</div>
 				<div id="collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
 					<div class="panel-body">
-						<label for="mes_image">Дополнительное изображение 1</label>
-						<input class="mes_image" name="mini[]" type="file" value=""/><br />
+						<label for="add_mes_image1">Дополнительное изображение 1</label>
+						<input id="add_mes_image1" class="mes_image" name="additional_img[]" type="file" value=""/><br />
 
-						<label for="mes_image">Дополнительное изображение 2</label>
-						<input class="mes_image" name="mini[]" type="file" value=""/><br />
+						<label for="add_mes_image2">Дополнительное изображение 2</label>
+						<input id="add_mes_image2" class="mes_image" name="additional_img[]" type="file" value=""/><br />
 
-						<label for="mes_image">Дополнительное изображение 3</label>
-						<input class="mes_image" name="mini[]" type="file" value=""/><br />
+						<label for="add_mes_image3">Дополнительное изображение 3</label>
+						<input id="add_mes_image3" class="mes_image" name="additional_img[]" type="file" value=""/><br />
 					</div>
 				</div>
 			</div>
@@ -45,6 +45,7 @@
 
 		<label for="mes_categories">Выбрать категорию</label>
 		<select name="mes_categories" id="mes_categories">
+			<option value=""></option>
 			<? if(!empty($categories) and is_array($categories)): ?>
 				<? foreach($categories as $p_cat_id => $p_category): ?>
 					<optgroup label="<?= $p_category['0'] ?>">
@@ -58,10 +59,11 @@
 		<br />
 
 		<label for="mes_town">Город</label>
-		<input class="form-control" name="mes_town" type="text" value="<?=$_SESSION['msg']['message']['town']?>" placeholder="Город"/><br />
+		<input id="mes_town" class="form-control" name="mes_town" type="text" value="<?=$_SESSION['msg']['mess']['town'];?>" placeholder="Город"/><br />
 
 		<label for="mes_time">Период актуальности объявления</label>
-			<select name="mes_time">
+			<select id="mes_time" name="mes_time">
+				<option value=""></option>
 				<option value="10">10 дней</option>
 				<option value="15">15 дней</option>
 				<option value="20">20 дней</option>
@@ -70,14 +72,14 @@
 		<br />
 
 		<label for="mes_price">Цена</label>
-		<input class="form-control" type='text' name='mes_price' value="<?=$_SESSION['msg']['message']['price']?>" placeholder="Цена"><br />
+		<input id="mes_price" class="form-control" type='text' name='mes_price' value="<?=$_SESSION['msg']['mess']['price']?>" placeholder="Цена"><br />
 
 		<label for="mes_body">Текст объявления</label>
-		<textarea name="mes_body" class="form-control" id="mes_body" cols="30" rows="10"><?=$_SESSION['msg']['message']['body']?></textarea><br />
+		<textarea name="mes_body" class="form-control" id="mes_body" cols="30" rows="10"><?=$_SESSION['msg']['mess']['body']?></textarea><br />
 
 		<label for="capcha">Введите код с картинки</label><br />
 		<img src="capcha.php"><br /><br />
-		<input class="form-control" type='text' name='capcha'>
+		<input id="capcha" class="form-control" type='text' name='capcha'>
 		<br />
 
 		<input type="submit" name="add_message" class="btn btn-primary" value="Добавить объявление"/>

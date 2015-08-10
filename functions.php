@@ -429,7 +429,7 @@ function getCategories($mysql_link){
 }
 
 function getImg(){
-	$with = 170;
+	$with = 160;
 	$height = 80;
 
 	$r = mt_rand(100, 255);
@@ -448,7 +448,7 @@ function getImg(){
 		}
 	}
 
-	$str = genStr(5);
+	$str = genStr(1);
 
 	$_SESSION['capcha'] = $str;
 
@@ -501,7 +501,7 @@ function genStr($max_letters){
 	return $str_g;
 }
 
-function addMessage($mysql_link, $data, $user_id){
+function addMessage($mysql_link, $data, $user) {
 	$title = clearData($mysql_link, $data['mes_title']);
 	$type = clearData($mysql_link, $data['mes_type'], 'i');
 	$category = clearData($mysql_link, $data['mes_categories'], 'i');
@@ -510,18 +510,253 @@ function addMessage($mysql_link, $data, $user_id){
 	$price = clearData($mysql_link, $data['mes_price']);
 	$body = clearData($mysql_link, $data['mes_body'], 'l');
 
+	$msg = '';
 
-
-	if(empty($_SESSION['capcha']) or $_SESSION['capcha'] !== $data['capcha']){
-		$_SESSION['msg']['message'] = array(
-			'title' => $title,
-			'town' => $town,
-			'time' => $time,
-			'price' => $price,
-			'body' => $body,
-		);
-		return 'Неправильный код с картинки';
+	if(empty($_SESSION['capcha']) or $_SESSION['capcha'] !== $data['capcha']) {
+		$msg .= 'Неправильный код с картинки<br \>';
 	}
 
-	return '';
+	unset($_SESSION['capcha']);
+
+	if(empty($title)) {
+		$msg .= 'Введите название объявления<br \>';
+	}
+
+	if(empty($type)) {
+		$msg .= 'Выберите тип объявления<br \>';
+	}
+
+	if(empty($category)) {
+		$msg .= 'Выберите категорию<br \>';
+	}
+
+	if(empty($town)) {
+		$msg .= 'Введите город<br \>';
+	}
+
+	if(empty($time)) {
+		$msg .= 'Выберите период актуальности объявления<br \>';
+	}
+
+	if(empty($price)) {
+		$msg .= 'Введите цену<br \>';
+	}
+
+	if(empty($body)) {
+		$msg .= 'Введите текст объявления<br \>';
+	}
+
+
+	if(empty($_FILES['mes_image']['tmp_name'])){
+		$msg .= 'Поле для изображения не должно быть пустым<br \>';
+	}
+
+	if(!empty($msg)) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage($msg, 'error');
+	}
+
+	if(!empty($_FILES['mes_image']['erroe'])) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage('Ошибка при загрузке файла, обратитесь к администратору', 'error');
+	}
+
+	$mime_types = array(
+		'jpeg' => 'image/jpeg',
+		'pjpeg' => 'image/pjpeg',
+		'png' => 'image/png',
+		'x-png' => 'image/x-png',
+		'gif' => 'image/gif',
+	);
+
+	$mime_img = array_search($_FILES['mes_image']['type'], $mime_types);
+
+	if(!$mime_img) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage('Неверный тип изображения, доспускаются только '.implode(', ', $mime_types), 'error');
+	}
+
+	if($_FILES['mes_image']['size'] > (2 * 1024 * 1024)) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage('Слишком большое изображение', 'error');
+	}
+
+	$filename = pathinfo($_FILES['mes_image']['name']);
+	$filename = time() . '.' . $filename['extension'];
+
+	if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage('Ошибка при копировании файла, обратитесь к администратору', 'error');
+	}
+
+	if(!img_resize(IMAGES.$filename, $mime_img)) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage('Ошибка при создании уменьшенной копии изображения, обратитесь к администратору'. 'error');
+	}
+
+	$msg = '';
+
+	//Дополнительные изображения
+	$additional_images = '';
+	if(!empty($_FILES['additional_img'])){
+		for($i = 0; $i < count($_FILES['additional_img']['name']); $i++){
+			if(empty($_FILES['additional_img']['name'][$i])) continue;
+
+			if(!empty($_FILES['additional_img']['erroe'][$i])) {
+				$msg .= 'Ошибка при загрузке дополнительного изображения, обратитесь к администратору<br \>';
+				continue;
+			}
+
+			$mime_img = array_search($_FILES['additional_img']['type'][$i], $mime_types);
+
+			if(!$mime_img) {
+				$msg .= 'Неверный тип дополнительного изображения<br \>';
+				continue;
+			}
+
+			if($_FILES['additional_img']['size'][$i] > (2 * 1024 * 1024)) {
+				$msg .= 'Слишком большое дополнительное изображение<br \>';
+				continue;
+			}
+
+			$additional_filename = pathinfo($_FILES['additional_img']['name'][$i]);
+			$additional_filename = $i.'_'.time().'.'.$additional_filename['extension'];
+
+			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], THUMBNAILS . $additional_filename)) {
+				$msg .= 'Ошибка при копировании дополнительного изображения, обратитесь к администратору<br \>';
+				continue;
+			}
+
+			if(!img_resize(IMAGES.$additional_filename, $mime_img)) {
+				$_SESSION['msg']['mess']['title'] = $title;
+				$_SESSION['msg']['mess']['town'] = $town;
+				$_SESSION['msg']['mess']['time'] = $time;
+				$_SESSION['msg']['mess']['price'] = $price;
+				$_SESSION['msg']['mess']['body'] = $body;
+				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения, обратитесь к администратору';
+			}
+
+			$additional_images .= $additional_filename.'|';
+		}
+		$additional_images = rtrim($additional_images, '|');
+	}
+
+	if(!empty($msg)) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage($msg, 'error');
+	}
+
+	$sql = "INSERT INTO mes_posts (title, body, date, user_id, category_id, type_id, town, img, additional_images, time_over, price) VALUES ('%s', '%s', UNIX_TIMESTAMP(), '%d', '%d', '%d', '%s', '%s', '%s', '%d', '%d')";
+	$sql = sprintf($sql, $title, $body, $user['user_id'], $category, $type, $town, $filename, $additional_images, $time, $price);
+
+	$result = mysqli_query($mysql_link, $sql);
+
+	if(!$result) {
+		$_SESSION['msg']['mess']['title'] = $title;
+		$_SESSION['msg']['mess']['town'] = $town;
+		$_SESSION['msg']['mess']['time'] = $time;
+		$_SESSION['msg']['mess']['price'] = $price;
+		$_SESSION['msg']['mess']['body'] = $body;
+		return setMessage('Ошибка при добавлении объявления, обратитесь к администратору', 'error');
+	}
+
+	return TRUE;
 }
+
+function img_resize($img, $type) {
+	$img_id = '';
+	switch($type){
+		case 'jpeg':
+		case 'pjpeg':
+			$img_id = imagecreatefromjpeg(IMAGES.$img);
+		break;
+		case 'png':
+		case 'xpng':
+			$img_id = imagecreatefrompng(IMAGES.$img);
+		break;
+		case 'gif':
+			$img_id = imagecreatefromgif(IMAGES.$img);
+		break;
+		default: return FALSE;
+	}
+
+	$img_with = imagesx($img_id);
+	$img_height = imagesy($img_id);
+
+	$ratio = round($img_with/IMG_WIDTH, 2);
+
+	$img_resized_width = round($img_with/$ratio);
+	$img_resized_height = round($img_height/$ratio);
+
+	$img_bg_id = imagecreatetruecolor($img_resized_width, $img_resized_height);
+
+	imagecopyresampled($img_bg_id, $img_id, 0, 0, 0, 0, $img_resized_width, $img_resized_height, $img_with, $img_height);
+
+	$img = imagejpeg($img_bg_id, $img, 100);
+
+	imagedestroy($img_id);
+	imagedestroy($img_bg_id);
+
+	if($img){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
