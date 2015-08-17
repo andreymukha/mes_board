@@ -25,7 +25,9 @@
 					<img src="<?= THUMBNAILS . $message['img']; ?>">
 					<?if(!empty($additional_images)):?>
 						<?foreach($additional_images as $add_img):?>
-							<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
+							<?if(!empty($add_img)):?>
+								<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
+							<?endif;?>
 						<?endforeach;?>
 					<?endif;?>
 				</div>
