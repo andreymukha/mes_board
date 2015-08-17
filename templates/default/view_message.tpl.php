@@ -8,24 +8,29 @@
 				</div>
 			<? endif; ?>
 
-<!--			<h4 class="title_p_mess">--><?//= $message['title']; ?><!--</h4>-->
-
-			<p class="p_mess_cat">
+			<div class="p_mess_cat">
 				<strong>Категория:</strong> <?= $message['cname']; ?> |
 				<strong>Тип объявления:</strong> <?= $message['tname']; ?> |
 				<strong>Город:</strong> <?= $message['town']; ?>
-			</p>
+			</div>
 
-			<p class="p_mess_cat">
+			<div class="p_mess_cat">
 				<strong>Дата добавления объявления:</strong> <?= date('d.m.Y - H:i:s', $message['date']); ?> |
 				<strong>Цена:</strong> <?= $message['price']; ?> |
 				<strong>Автор</strong> <a href="mailto:<?= $message['uemail']; ?>"><?= $message['uname']; ?></a>
-			</p>
+			</div>
 
-			<p>
-				<img class="mini_mess" src="<?= THUMBNAILS . $message['img']; ?>">
+			<div class="body">
+				<div class="mini_mess">
+					<img src="<?= THUMBNAILS . $message['img']; ?>">
+					<?if(!empty($additional_images)):?>
+						<?foreach($additional_images as $add_img):?>
+							<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
+						<?endforeach;?>
+					<?endif;?>
+				</div>
 				<?= nl2br($message['body']); ?>
-			</p>
+			</div>
 		</div>
 
 		<div class="clearfix"></div>
