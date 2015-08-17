@@ -92,7 +92,7 @@
 				</form>
 			</div>
 		</div>
-		<div id="content">
+		<div id="content" class="<?=$action?>">
 			<h3 class="title_page"><?= $title ?></h3>
 			<? if($_SESSION['msg']): ?>
 				<?= $_SESSION['msg']['message']; ?>
