@@ -39,7 +39,7 @@ function setMessage($message, $type = 'info') {
 		default:
 			$type = 'alert-info';
 	}
-	return template('message.tpl.php', array('message' => $message, 'type' => $type));
+	return template('system_message.tpl.php', array('message' => $message, 'type' => $type));
 }
 
 function getTitle($action){
@@ -120,7 +120,7 @@ function template($path, $vars = array()){
  *    Необработанные данные пользователя из регистрационной формы
  *
  * @return bool|string
- *    При неудачной регистрации возвращает отформатированный текст ошибки по шаблону message.tpl.php, при успехе
+ *    При неудачной регистрации возвращает отформатированный текст ошибки по шаблону system_message.tpl.php, при успехе
  *     возвращает булево значение TRUE
  *
  * @author Fly
