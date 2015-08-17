@@ -651,17 +651,18 @@ function addMessage($mysql_link, $data, $user) {
 
 	if(!empty($_FILES['additional_img'])){
 		for($i = 0; $i < count($_FILES['additional_img']['name']); $i++){
+			$cnt = $i + 1;
 			if(empty($_FILES['additional_img']['name'][$i])) continue;
 
 			if(!empty($_FILES['additional_img']['erroe'][$i])) {
-				$msg .= 'Ошибка при загрузке дополнительного изображения '.$i.', обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при загрузке дополнительного изображения '.$cnt.', обратитесь к администратору<br \>';
 				continue;
 			}
 
 			$mime_img = array_search($_FILES['additional_img']['type'][$i], $mime_types);
 
 			if(!$mime_img) {
-				$msg .= 'Неверный тип дополнительного изображения '.$i.', доспускаются только '.implode(', ', array_keys($mime_types)).'<br \>';
+				$msg .= 'Неверный тип дополнительного изображения '.$cnt.', доспускаются только '.implode(', ', array_keys($mime_types)).'<br \>';
 				continue;
 			}
 
@@ -674,7 +675,7 @@ function addMessage($mysql_link, $data, $user) {
 			$additional_filename = $i.'-'.time().'-'.uniqid().'.'.$additional_filename['extension'];
 
 			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], IMAGES . $additional_filename)) {
-				$msg .= 'Ошибка при копировании дополнительного изображения '.$i.', обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при копировании дополнительного изображения '.$cnt.', обратитесь к администратору<br \>';
 				continue;
 			}
 
@@ -685,7 +686,7 @@ function addMessage($mysql_link, $data, $user) {
 				$_SESSION['msg']['mess']['body'] = $body;
 				$_SESSION['msg']['mess']['type'] = $type;
 				$_SESSION['msg']['mess']['mes_category'] = $category;
-				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$i.', обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$cnt.', обратитесь к администратору<br \>';
 			}
 
 			$additional_images .= $additional_filename.'|';
