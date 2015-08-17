@@ -600,6 +600,15 @@ function addMessage($mysql_link, $data, $user) {
 	$filename = pathinfo($_FILES['mes_image']['name']);
 	$filename = time().'-'. uniqid() . '.' . $filename['extension'];
 
+	if(!file_exists(FILES)){
+		mkdir(FILES, 0755);
+	}
+
+	if(!file_exists(IMAGES)){
+		mkdir(IMAGES, 0755);
+	}
+
+
 	if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
@@ -609,7 +618,7 @@ function addMessage($mysql_link, $data, $user) {
 		return setMessage('Ошибка при копировании файла, обратитесь к администратору', 'error');
 	}
 
-	if(!img_resize(IMAGES.$filename, $mime_img)) {
+	if(!img_resize($filename, $mime_img)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
 		$_SESSION['msg']['mess']['time'] = $time;
@@ -629,37 +638,37 @@ function addMessage($mysql_link, $data, $user) {
 			if(empty($_FILES['additional_img']['name'][$i])) continue;
 
 			if(!empty($_FILES['additional_img']['erroe'][$i])) {
-				$msg .= 'Ошибка при загрузке дополнительного изображения, обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при загрузке дополнительного изображения '.$i.', обратитесь к администратору<br \>';
 				continue;
 			}
 
 			$mime_img = array_search($_FILES['additional_img']['type'][$i], $mime_types);
 
 			if(!$mime_img) {
-				$msg .= 'Неверный тип дополнительного изображения<br \>';
+				$msg .= 'Неверный тип дополнительного изображения '.$i.'<br \>';
 				continue;
 			}
 
 			if($_FILES['additional_img']['size'][$i] > (2 * 1024 * 1024)) {
-				$msg .= 'Слишком большое дополнительное изображение<br \>';
+				$msg .= 'Слишком большое дополнительное изображение '.$i.'<br \>';
 				continue;
 			}
 
 			$additional_filename = pathinfo($_FILES['additional_img']['name'][$i]);
 			$additional_filename = $i.'-'.time().'-'.uniqid().'.'.$additional_filename['extension'];
 
-			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], THUMBNAILS . $additional_filename)) {
-				$msg .= 'Ошибка при копировании дополнительного изображения, обратитесь к администратору<br \>';
+			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], IMAGES . $additional_filename)) {
+				$msg .= 'Ошибка при копировании дополнительного изображения '.$i.', обратитесь к администратору<br \>';
 				continue;
 			}
 
-			if(!img_resize(IMAGES.$additional_filename, $mime_img)) {
+			if(!img_resize($additional_filename, $mime_img)) {
 				$_SESSION['msg']['mess']['title'] = $title;
 				$_SESSION['msg']['mess']['town'] = $town;
 				$_SESSION['msg']['mess']['time'] = $time;
 				$_SESSION['msg']['mess']['price'] = $price;
 				$_SESSION['msg']['mess']['body'] = $body;
-				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения, обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$i.', обратитесь к администратору<br \>';
 			}
 
 			$additional_images .= $additional_filename.'|';
@@ -696,17 +705,19 @@ function addMessage($mysql_link, $data, $user) {
 
 function img_resize($img, $type) {
 	$img_id = '';
+	ini_set("gd.jpeg_ignore_warning", 1);
+
 	switch($type){
 		case 'jpeg':
 		case 'pjpeg':
-			$img_id = imagecreatefromjpeg($img);
+			$img_id = imagecreatefromjpeg(IMAGES.$img);
 		break;
 		case 'png':
 		case 'xpng':
-			$img_id = imagecreatefrompng($img);
+			$img_id = imagecreatefrompng(IMAGES.$img);
 		break;
 		case 'gif':
-			$img_id = imagecreatefromgif($img);
+			$img_id = imagecreatefromgif(IMAGES.$img);
 		break;
 		default: return FALSE;
 	}
@@ -723,7 +734,7 @@ function img_resize($img, $type) {
 
 	imagecopyresampled($img_bg_id, $img_id, 0, 0, 0, 0, $img_resized_width, $img_resized_height, $img_with, $img_height);
 
-	$img = imagejpeg($img_bg_id, $img, 100);
+	$img = imagejpeg($img_bg_id, THUMBNAILS.$img, 100);
 
 	imagedestroy($img_id);
 	imagedestroy($img_bg_id);
