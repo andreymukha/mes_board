@@ -321,8 +321,8 @@ function checkUser($mysql_link){
 		$sess = md5(microtime());
 		$sql = "UPDATE mes_users SET sess='$sess' WHERE `login`='%s'";
 		$sql = sprintf($sql, $login);
-		$result = mysqli_query($mysql_link, $sql);
-		if(!$result){
+		$result2 = mysqli_query($mysql_link, $sql);
+		if(!$result2){
 			return FALSE;
 		}
 
@@ -598,7 +598,7 @@ function addMessage($mysql_link, $data, $user) {
 	}
 
 	$filename = pathinfo($_FILES['mes_image']['name']);
-	$filename = time() . '.' . $filename['extension'];
+	$filename = time().'-'. uniqid() . '.' . $filename['extension'];
 
 	if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
 		$_SESSION['msg']['mess']['title'] = $title;
@@ -646,7 +646,7 @@ function addMessage($mysql_link, $data, $user) {
 			}
 
 			$additional_filename = pathinfo($_FILES['additional_img']['name'][$i]);
-			$additional_filename = $i.'_'.time().'.'.$additional_filename['extension'];
+			$additional_filename = $i.'-'.time().'-'.uniqid().'.'.$additional_filename['extension'];
 
 			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], THUMBNAILS . $additional_filename)) {
 				$msg .= 'Ошибка при копировании дополнительного изображения, обратитесь к администратору<br \>';
@@ -659,7 +659,7 @@ function addMessage($mysql_link, $data, $user) {
 				$_SESSION['msg']['mess']['time'] = $time;
 				$_SESSION['msg']['mess']['price'] = $price;
 				$_SESSION['msg']['mess']['body'] = $body;
-				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения, обратитесь к администратору';
+				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения, обратитесь к администратору<br \>';
 			}
 
 			$additional_images .= $additional_filename.'|';
