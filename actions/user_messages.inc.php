@@ -5,5 +5,8 @@ if(!$user or privileges($mysql_link, !$user['role_id'], array('ADD_MESS'))) {
 	$content = '';
 }else{
 	$user_messages = getUserMessages($mysql_link, $user['user_id']);
+	if(is_array($user_messages)){
+		$user_messages = messageIntro($user_messages);
+	}
 	$content = template('user_messages.tpl.php', array('user_messages' => $user_messages));
 }

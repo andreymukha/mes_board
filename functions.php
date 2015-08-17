@@ -780,7 +780,17 @@ function getUserMessages($mysql_link, $user_id){
 	return $user_messages;
 }
 
-
+function messageIntro($messages){
+	$row = array();
+	foreach($messages as $message){
+		if(strlen($message['body']) > 1000){
+			$message['body'] = substr($message['body'], 0, 1000);
+			$message['body'] = substr($message['body'], 0, strrpos($message['body'], ' ')).'...';
+		}
+		$row[] = $message;
+	}
+	return $row;
+}
 
 
 
