@@ -596,7 +596,7 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
 		$_SESSION['msg']['mess']['mes_category'] = $category;
-		return setMessage('Неверный тип изображения, доспускаются только '.implode(', ', $mime_types), 'error');
+		return setMessage('Неверный тип изображения, доспускаются только '.implode(', ', array_keys($mime_types)), 'error');
 	}
 
 	if($_FILES['mes_image']['size'] > (2 * 1024 * 1024)) {
