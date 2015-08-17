@@ -557,6 +557,8 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage($msg, 'error');
 	}
 
@@ -566,6 +568,8 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage('Ошибка при загрузке файла, обратитесь к администратору', 'error');
 	}
 
@@ -585,6 +589,8 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage('Неверный тип изображения, доспускаются только '.implode(', ', $mime_types), 'error');
 	}
 
@@ -594,6 +600,8 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage('Слишком большое изображение', 'error');
 	}
 
@@ -612,13 +620,14 @@ function addMessage($mysql_link, $data, $user) {
 		mkdir(THUMBNAILS, 0755);
 	}
 
-
 	if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage('Ошибка при копировании файла, обратитесь к администратору', 'error');
 	}
 
@@ -628,9 +637,10 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage('Ошибка при создании уменьшенной копии изображения, обратитесь к администратору'. 'error');
 	}
-
 
 	//Дополнительные изображения
 	$additional_images = '';
@@ -672,6 +682,8 @@ function addMessage($mysql_link, $data, $user) {
 				$_SESSION['msg']['mess']['time'] = $time;
 				$_SESSION['msg']['mess']['price'] = $price;
 				$_SESSION['msg']['mess']['body'] = $body;
+				$_SESSION['msg']['mess']['type'] = $type;
+				$_SESSION['msg']['mess']['mes_category'] = $category;
 				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$i.', обратитесь к администратору<br \>';
 			}
 
@@ -684,6 +696,8 @@ function addMessage($mysql_link, $data, $user) {
 			$_SESSION['msg']['mess']['time'] = $time;
 			$_SESSION['msg']['mess']['price'] = $price;
 			$_SESSION['msg']['mess']['body'] = $body;
+			$_SESSION['msg']['mess']['type'] = $type;
+			$_SESSION['msg']['mess']['mes_category'] = $category;
 			return setMessage($msg, 'error');
 		}
 
@@ -701,6 +715,8 @@ function addMessage($mysql_link, $data, $user) {
 		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
+		$_SESSION['msg']['mess']['type'] = $type;
+		$_SESSION['msg']['mess']['mes_category'] = $category;
 		return setMessage('Ошибка при добавлении объявления, обратитесь к администратору', 'error');
 	}
 

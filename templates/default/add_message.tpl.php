@@ -7,7 +7,11 @@
 			<? if(!empty($types) and is_array($types)): ?>
 				<? foreach($types as $type): ?>
 					<label for="mes_type">
-						<input type="radio" name="mes_type" value="<?=$type['type_id']?>"/> <?=$type['name']?>
+						<? if(!empty($_SESSION['msg']['mess']['type']) and $_SESSION['msg']['mess']['type'] == $type['type_id']): ?>
+							<input type="radio" name="mes_type" checked value="<?=$type['type_id']?>"/> <?=$type['name']?>
+						<?else:?>
+							<input type="radio" name="mes_type" value="<?=$type['type_id']?>"/> <?=$type['name']?>
+						<? endif; ?>
 					</label>
 				<? endforeach; ?>
 			<? endif; ?>
@@ -50,7 +54,11 @@
 				<? foreach($categories as $p_cat_id => $p_category): ?>
 					<optgroup label="<?= $p_category['0'] ?>">
 						<? foreach($p_category['parent'] as $cat_id => $category): ?>
-							<option value="<?=$cat_id?>">— <?=$category?></option>
+							<? if(!empty($_SESSION['msg']['mess']['mes_category']) and $_SESSION['msg']['mess']['mes_category'] == $cat_id): ?>
+								<option selected value="<?=$cat_id?>">— <?=$category?></option>
+							<?else:?>
+								<option value="<?=$cat_id?>">— <?=$category?></option>
+							<? endif; ?>
 						<? endforeach; ?>
 					</optgroup>
 				<? endforeach; ?>
