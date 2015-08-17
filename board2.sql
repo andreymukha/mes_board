@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 10 2015 г., 11:27
+-- Время создания: Авг 17 2015 г., 17:30
 -- Версия сервера: 5.6.22-log
 -- Версия PHP: 5.4.35
 
@@ -66,19 +66,20 @@ CREATE TABLE IF NOT EXISTS `mes_posts` (
   `town` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
   `published` enum('0','1') NOT NULL DEFAULT '0',
-  `time_over` int(11) NOT NULL,
   `is_actual` enum('0','1') NOT NULL DEFAULT '1',
   `price` int(11) NOT NULL,
   `additional_images` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Дамп данных таблицы `mes_posts`
 --
 
-INSERT INTO `mes_posts` (`post_id`, `title`, `body`, `date`, `user_id`, `category_id`, `type_id`, `town`, `img`, `published`, `time_over`, `is_actual`, `price`, `additional_images`) VALUES
-(13, 'Заголовок', 'рапрпрапра', 1439193909, 1, 5, 2, 'Минск', '1439193909.png', '0', 15, '1', 100, '0_1439193909.jpg|1_1439193909.gif');
+INSERT INTO `mes_posts` (`post_id`, `title`, `body`, `date`, `user_id`, `category_id`, `type_id`, `town`, `img`, `published`, `is_actual`, `price`, `additional_images`) VALUES
+(16, 'Заголовок', '4212312312312313212', 1439797565, 1, 6, 1, 'Минск', '1439797565-55d1913d826d9.jpg', '0', '1', 100, '0-1439797565-55d1913d8a3db.jpg|1-1439797565-55d1913d93465.jpg|2-1439797565-55d1913d98e3e.jpg'),
+(17, 'Заголовок 2', 'какой-то текст', 1439802876, 1, 10, 2, 'Минск', '1439802876-55d1a5fc802cc.jpg', '1', '1', 4444, '0-1439802876-55d1a5fc8879e.jpg|1-1439802876-55d1a5fc8ed30.jpg|2-1439802876-55d1a5fc95a91.jpg'),
+(18, 'Заголовок 3', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam beatae consequuntur exercitationem facere ipsum libero nisi nobis perferendis placeat possimus quas quidem suscipit, voluptatum! A asperiores deleniti dicta incidunt ipsam, ipsum maxime minus odio officia quisquam quod reiciendis repellat vero. Animi dolorem enim eum excepturi expedita impedit, mollitia non, omnis reiciendis sequi similique temporibus, vel voluptas. Beatae deserunt ipsum maxime optio perferendis. At culpa cum dolorem eveniet illum neque nulla placeat voluptatibus. Accusamus alias aut consectetur consequatur cum deserunt doloremque dolorum eaque eligendi id illo incidunt labore, neque officia perferendis quam quo saepe similique sunt tempore vel velit veritatis vero.', 1439809081, 1, 7, 1, 'Минск', '1439809081-55d1be39b9873.jpg', '0', '1', 23213, '');
 
 -- --------------------------------------------------------
 
@@ -192,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `mes_users` (
 --
 
 INSERT INTO `mes_users` (`user_id`, `login`, `password`, `name`, `hash`, `active`, `sess`, `email`, `role_id`, `created`, `last_login`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Андрей', '36ed9de6b0cec29b771f91b91acde47f', '1', '2fa332e083ad9baeac5292ca96138b85', 'andryfly7@gmail.com', 1, 1438471421, 1439040583),
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Андрей', '36ed9de6b0cec29b771f91b91acde47f', '1', '55e0a52f3499bb3c90feb4857c94c6f0', 'andryfly7@gmail.com', 1, 1438471421, 1439805924),
 (5, 'test10', '202cb962ac59075b964b07152d234b70', 'Серёга', '84f71fef3e3747abfa2a4dff1f5e1c83', '1', '50d8fe4a93d42c4fd13bb62d970c255e', 'a.ndr.yfly7@gmail.com', 3, 1438642228, 1438957813);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
