@@ -8,7 +8,7 @@
 				</div>
 			<? endif; ?>
 
-			<h4 class="title_p_mess"><?= $message['title']; ?></h4>
+<!--			<h4 class="title_p_mess">--><?//= $message['title']; ?><!--</h4>-->
 
 			<p class="p_mess_cat">
 				<strong>Категория:</strong> <?= $message['cname']; ?> |

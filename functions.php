@@ -42,7 +42,7 @@ function setMessage($message, $type = 'info') {
 	return template('system_message.tpl.php', array('message' => $message, 'type' => $type));
 }
 
-function getTitle($action){
+function getTitle($action, $link){
 	foreach(scandir('actions') as $dir){
 		if($dir == '..' or $dir == '.') continue;
 		$dir = explode('.', $dir);
@@ -53,7 +53,13 @@ function getTitle($action){
 				case 'login': return 'Авторизация'; break;
 				case 'registration': return 'Регистрация'; break;
 				case 'add_message': return 'Добавить объявление'; break;
-				case 'user_messages': return 'Мои объявления'; break;}
+				case 'user_messages': return 'Мои объявления'; break;
+				case 'view_message':
+					$id = (int)$_GET['id'];
+					$result = getResult(mysqli_query($link, "SELECT title FROM mes_posts WHERE post_id = '$id'"), TRUE);
+					return $result['title'];
+				break;
+			}
 		}
 	}
 }
