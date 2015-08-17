@@ -17,7 +17,7 @@
 				<? if($add_mess): ?>
 					<li><a href="?action=add_message">Добавить объявление</a></li>
 				<? endif; ?>
-				<li><a href="?action=p_mess">Ваши объявления</a></li>
+				<li><a href="?action=user_messages">Ваши объявления</a></li>
 			<? endif; ?>
 			<? if($types and is_array($types)): ?>
 				<? foreach($types as $item): ?>

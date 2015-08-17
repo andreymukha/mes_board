@@ -53,7 +53,7 @@ function getTitle($action){
 				case 'login': return 'Авторизация'; break;
 				case 'registration': return 'Регистрация'; break;
 				case 'add_message': return 'Добавить объявление'; break;
-			}
+				case 'user_messages': return 'Мои объявления'; break;}
 		}
 	}
 }
@@ -298,7 +298,7 @@ function login($mysql_link, $data){
 function checkUser($mysql_link){
 	if(isset($_SESSION['sess'])){
 		$sess = $_SESSION['sess'];
-		$sql = "SELECT user_id, login, name, email, role_id, created, last_login FROM mes_users WHERE sess='$sess'";
+		$sql = "SELECT user_id, login, name, email, role_id, created, last_login FROM mes_users WHERE sess='$sess' AND active='1'";
 		$result = mysqli_query($mysql_link, $sql);
 
 		if(!$result or mysqli_num_rows($result) < 1){
@@ -710,34 +710,34 @@ function img_resize($img, $type) {
 	switch($type){
 		case 'jpeg':
 		case 'pjpeg':
-			$img_id = imagecreatefromjpeg(IMAGES.$img);
+			$img_id = @imagecreatefromjpeg(IMAGES.$img);
 		break;
 		case 'png':
 		case 'xpng':
-			$img_id = imagecreatefrompng(IMAGES.$img);
+			$img_id = @imagecreatefrompng(IMAGES.$img);
 		break;
 		case 'gif':
-			$img_id = imagecreatefromgif(IMAGES.$img);
+			$img_id = @imagecreatefromgif(IMAGES.$img);
 		break;
 		default: return FALSE;
 	}
 
-	$img_with = imagesx($img_id);
-	$img_height = imagesy($img_id);
+	$img_with = @imagesx($img_id);
+	$img_height = @imagesy($img_id);
 
 	$ratio = round($img_with/IMG_WIDTH, 2);
 
 	$img_resized_width = round($img_with/$ratio);
 	$img_resized_height = round($img_height/$ratio);
 
-	$img_bg_id = imagecreatetruecolor($img_resized_width, $img_resized_height);
+	$img_bg_id = @imagecreatetruecolor($img_resized_width, $img_resized_height);
 
-	imagecopyresampled($img_bg_id, $img_id, 0, 0, 0, 0, $img_resized_width, $img_resized_height, $img_with, $img_height);
+	@imagecopyresampled($img_bg_id, $img_id, 0, 0, 0, 0, $img_resized_width, $img_resized_height, $img_with, $img_height);
 
-	$img = imagejpeg($img_bg_id, THUMBNAILS.$img, 100);
+	$img = @imagejpeg($img_bg_id, THUMBNAILS.$img, 100);
 
-	imagedestroy($img_id);
-	imagedestroy($img_bg_id);
+	@imagedestroy($img_id);
+	@imagedestroy($img_bg_id);
 
 	if($img){
 		return TRUE;
@@ -746,7 +746,34 @@ function img_resize($img, $type) {
 	}
 }
 
-
+function getUserMessages($mysql_link, $user_id){
+	$sql = "SELECT
+				mes_posts.post_id,
+				mes_posts.title,
+				mes_posts.body,
+				mes_posts.date,
+				mes_posts.town,
+				mes_posts.img,
+				mes_posts.published,
+				mes_posts.time_over,
+				mes_posts.is_actual,
+				mes_posts.price,
+				mes_users.user_id AS uid,
+				mes_users.name AS uname,
+				mes_users.email AS uemail,
+				mes_categories.name AS cname,
+				mes_types.name AS tname
+			FROM mes_posts
+			LEFT JOIN mes_users ON mes_users.user_id = '$user_id'
+			LEFT JOIN mes_categories ON mes_categories.category_id = mes_posts.category_id
+			LEFT JOIN mes_types ON mes_types.type_id = mes_posts.type_id
+			WHERE mes_posts.user_id = '$user_id'
+			ORDER BY mes_posts.date DESC
+	";
+	$result = mysqli_query($mysql_link, $sql);
+	$user_messages = getResult($result);
+	return $user_messages;
+}
 
 
 
