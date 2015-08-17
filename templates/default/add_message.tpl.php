@@ -69,16 +69,6 @@
 		<label for="mes_town">Город</label>
 		<input id="mes_town" class="form-control" name="mes_town" type="text" value="<?=$_SESSION['msg']['mess']['town'];?>" placeholder="Город"/><br />
 
-		<label for="mes_time">Период актуальности объявления</label>
-			<select id="mes_time" name="mes_time">
-				<option value=""></option>
-				<option value="10">10 дней</option>
-				<option value="15">15 дней</option>
-				<option value="20">20 дней</option>
-				<option value="30">30 дней</option>
-			</select>
-		<br />
-
 		<label for="mes_price">Цена</label>
 		<input id="mes_price" class="form-control" type='text' name='mes_price' value="<?=$_SESSION['msg']['mess']['price']?>" placeholder="Цена"><br />
 

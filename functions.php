@@ -506,7 +506,6 @@ function addMessage($mysql_link, $data, $user) {
 	$type = clearData($mysql_link, $data['mes_type'], 'i');
 	$category = clearData($mysql_link, $data['mes_categories'], 'i');
 	$town = clearData($mysql_link, $data['mes_town']);
-	$time = clearData($mysql_link, $data['mes_time'], 'i');
 	$price = clearData($mysql_link, $data['mes_price']);
 	$body = clearData($mysql_link, $data['mes_body'], 'l');
 
@@ -534,10 +533,6 @@ function addMessage($mysql_link, $data, $user) {
 		$msg .= 'Введите город<br \>';
 	}
 
-	if(empty($time)) {
-		$msg .= 'Выберите период актуальности объявления<br \>';
-	}
-
 	if(empty($price)) {
 		$msg .= 'Введите цену<br \>';
 	}
@@ -554,7 +549,6 @@ function addMessage($mysql_link, $data, $user) {
 	if(!empty($msg)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -565,7 +559,6 @@ function addMessage($mysql_link, $data, $user) {
 	if(!empty($_FILES['mes_image']['erroe'])) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -586,7 +579,6 @@ function addMessage($mysql_link, $data, $user) {
 	if(!$mime_img) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -597,7 +589,6 @@ function addMessage($mysql_link, $data, $user) {
 	if($_FILES['mes_image']['size'] > (2 * 1024 * 1024)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -623,7 +614,6 @@ function addMessage($mysql_link, $data, $user) {
 	if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -634,7 +624,6 @@ function addMessage($mysql_link, $data, $user) {
 	if(!img_resize($filename, $mime_img)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -679,7 +668,6 @@ function addMessage($mysql_link, $data, $user) {
 			if(!img_resize($additional_filename, $mime_img)) {
 				$_SESSION['msg']['mess']['title'] = $title;
 				$_SESSION['msg']['mess']['town'] = $town;
-				$_SESSION['msg']['mess']['time'] = $time;
 				$_SESSION['msg']['mess']['price'] = $price;
 				$_SESSION['msg']['mess']['body'] = $body;
 				$_SESSION['msg']['mess']['type'] = $type;
@@ -693,7 +681,6 @@ function addMessage($mysql_link, $data, $user) {
 		if(!empty($msg)) {
 			$_SESSION['msg']['mess']['title'] = $title;
 			$_SESSION['msg']['mess']['town'] = $town;
-			$_SESSION['msg']['mess']['time'] = $time;
 			$_SESSION['msg']['mess']['price'] = $price;
 			$_SESSION['msg']['mess']['body'] = $body;
 			$_SESSION['msg']['mess']['type'] = $type;
@@ -704,15 +691,14 @@ function addMessage($mysql_link, $data, $user) {
 		$additional_images = rtrim($additional_images, '|');
 	}
 
-	$sql = "INSERT INTO mes_posts (title, body, date, user_id, category_id, type_id, town, img, additional_images, time_over, price) VALUES ('%s', '%s', UNIX_TIMESTAMP(), '%d', '%d', '%d', '%s', '%s', '%s', '%d', '%d')";
-	$sql = sprintf($sql, $title, $body, $user['user_id'], $category, $type, $town, $filename, $additional_images, $time, $price);
+	$sql = "INSERT INTO mes_posts (title, body, date, user_id, category_id, type_id, town, img, additional_images, price) VALUES ('%s', '%s', UNIX_TIMESTAMP(), '%d', '%d', '%d', '%s', '%s', '%s', '%d')";
+	$sql = sprintf($sql, $title, $body, $user['user_id'], $category, $type, $town, $filename, $additional_images, $price);
 
 	$result = mysqli_query($mysql_link, $sql);
 
 	if(!$result) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
-		$_SESSION['msg']['mess']['time'] = $time;
 		$_SESSION['msg']['mess']['price'] = $price;
 		$_SESSION['msg']['mess']['body'] = $body;
 		$_SESSION['msg']['mess']['type'] = $type;
@@ -775,7 +761,6 @@ function getUserMessages($mysql_link, $user_id){
 				mes_posts.town,
 				mes_posts.img,
 				mes_posts.published,
-				mes_posts.time_over,
 				mes_posts.is_actual,
 				mes_posts.price,
 				mes_users.user_id AS uid,
