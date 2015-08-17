@@ -42,7 +42,7 @@ function setMessage($message, $type = 'info') {
 	return template('system_message.tpl.php', array('message' => $message, 'type' => $type));
 }
 
-function getTitle($action, $link){
+function getTitle($link, $action, $user){
 	foreach(scandir('actions') as $dir){
 		if($dir == '..' or $dir == '.') continue;
 		$dir = explode('.', $dir);
@@ -56,7 +56,10 @@ function getTitle($action, $link){
 				case 'user_messages': return 'Мои объявления'; break;
 				case 'view_message':
 					$id = (int)$_GET['id'];
-					$result = getResult(mysqli_query($link, "SELECT title FROM mes_posts WHERE post_id = '$id'"), TRUE);
+					$result = getResult(mysqli_query($link, "SELECT title, user_id FROM mes_posts WHERE post_id = '$id'"), TRUE);
+					if($result['user_id'] != $user['user_id']){
+						return '';
+					}
 					return $result['title'];
 				break;
 			}
