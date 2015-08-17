@@ -384,7 +384,7 @@ function getPrivileges($mysql_link, $id) {
 	return $arr;
 }
 
-function getResult($result){
+function getResult($result, $limit = FALSE){
 	if(!$result){
 		return FALSE;
 	}
@@ -394,6 +394,10 @@ function getResult($result){
 	}
 
 	$list = array();
+
+	if($limit){
+		return mysqli_fetch_assoc($result);
+	}
 
 	while($row = mysqli_fetch_assoc($result)){
 		$list[] = $row;
@@ -792,7 +796,35 @@ function messageIntro($messages){
 	return $row;
 }
 
-
+function getMessage($mysql_link, $id){
+	$sql = "SELECT
+				mes_posts.post_id,
+				mes_posts.user_id AS post_uid,
+				mes_posts.title,
+				mes_posts.body,
+				mes_posts.date,
+				mes_posts.town,
+				mes_posts.img,
+				mes_posts.additional_images,
+				mes_posts.published,
+				mes_posts.is_actual,
+				mes_posts.price,
+				mes_users.user_id AS uid,
+				mes_users.name AS uname,
+				mes_users.email AS uemail,
+				mes_categories.name AS cname,
+				mes_types.name AS tname
+			FROM mes_posts
+			LEFT JOIN mes_users ON mes_users.user_id = mes_posts.user_id
+			LEFT JOIN mes_categories ON mes_categories.category_id = mes_posts.category_id
+			LEFT JOIN mes_types ON mes_types.type_id = mes_posts.type_id
+			WHERE mes_posts.post_id = '$id'
+			LIMIT 1
+	";
+	$result = mysqli_query($mysql_link, $sql);
+	$message = getResult($result, true);
+	return $message;
+}
 
 
 
