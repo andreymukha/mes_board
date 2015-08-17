@@ -99,7 +99,7 @@
 			<? endif; ?>
 			<?= $content ?>
 		</div>
-		<div style="clear:both"></div>
+		<div class="clearfix"></div>
 	</div>
 
 	<div id="footer">
