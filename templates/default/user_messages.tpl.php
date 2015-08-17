@@ -1,6 +1,14 @@
+<!--@todo Сделать возиожность редактирования для пользователя-->
 <? if(!empty($user_messages)): ?>
 	<? foreach($user_messages as $message): ?>
-		<div class="t_mess">
+		<div class="t_mess unpublished<?=$message['published'];?>">
+
+		<? if($message['published'] == 0): ?>
+			<div class="unpublish-mess">
+				<i>U</i><i>N</i><i>P</i><i>U</i><i>B</i><i>L</i><i>I</i><i>S</i><i>H</i><i>E</i><i>D</i>
+			</div>
+		<? endif; ?>
+
 			<h4 class="title_p_mess">
 				<a href="http://board.dev/?action=view_message&id=<?= $message['post_id']; ?>"><?= $message['title']; ?></a>
 			</h4>
