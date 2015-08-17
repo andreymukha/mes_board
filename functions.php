@@ -608,6 +608,10 @@ function addMessage($mysql_link, $data, $user) {
 		mkdir(IMAGES, 0755);
 	}
 
+	if(!file_exists(THUMBNAILS)){
+		mkdir(THUMBNAILS, 0755);
+	}
+
 
 	if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
 		$_SESSION['msg']['mess']['title'] = $title;
