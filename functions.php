@@ -661,7 +661,7 @@ function addMessage($mysql_link, $data, $user) {
 			$mime_img = array_search($_FILES['additional_img']['type'][$i], $mime_types);
 
 			if(!$mime_img) {
-				$msg .= 'Неверный тип дополнительного изображения '.$i.'<br \>';
+				$msg .= 'Неверный тип дополнительного изображения '.$i.', доспускаются только '.implode(', ', array_keys($mime_types)).'<br \>';
 				continue;
 			}
 
