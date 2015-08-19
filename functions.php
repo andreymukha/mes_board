@@ -404,7 +404,7 @@ function getResult($result, $limit = FALSE){
 
 	$list = array();
 
-	if($limit){
+	if(is_bool($limit) and $limit){
 		return mysqli_fetch_assoc($result);
 	}
 
