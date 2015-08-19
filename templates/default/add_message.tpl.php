@@ -33,14 +33,15 @@
 				</div>
 				<div id="collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
 					<div class="panel-body">
-						<label for="add_mes_image1">Дополнительное изображение 1</label>
-						<input id="add_mes_image1" class="mes_image" name="additional_img[]" type="file" value=""/><br />
-
-						<label for="add_mes_image2">Дополнительное изображение 2</label>
-						<input id="add_mes_image2" class="mes_image" name="additional_img[]" type="file" value=""/><br />
-
-						<label for="add_mes_image3">Дополнительное изображение 3</label>
-						<input id="add_mes_image3" class="mes_image" name="additional_img[]" type="file" value=""/><br />
+						<!--ФОРМА ДЛЯ ЗАГРУЗКИ КАРТИНОК-->
+						<div class="additional_images">
+							<div class="img">
+								<label for="add_mes_image1">Дополнительное изображение 1</label>
+								<input id="add_mes_image1" class="mes_image" name="additional_img[]" type="file"value=""/><br/>
+							</div>
+						</div>
+						<input id="add_img" type="button" class="btn" value="Добавить дополнительное поле"/>
+						<!--ФОРМА ДЛЯ ЗАГРУЗКИ КАРТИНОК-->
 					</div>
 				</div>
 			</div>
