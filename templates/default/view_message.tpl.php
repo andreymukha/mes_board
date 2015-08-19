@@ -38,7 +38,7 @@
 		<div class="clearfix"></div>
 		<div class="links">
 			<ul>
-				<li><a href="?action=user_idit_message&id=<?= $message['post_id']; ?>">Редактировать</a></li>
+				<li><a href="?action=edit_message&id=<?= $message['post_id']; ?>">Редактировать</a></li>
 				<li><a href="?action=user_messages&delete=<?= $message['post_id']; ?>">Удалить</a></li>
 			</ul>
 		</div>
