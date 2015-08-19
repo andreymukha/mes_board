@@ -11,7 +11,7 @@ $(document).ready(function () {
         $('<div class="img"><label for="add_mes_image' + i + '">Дополнительное изображение ' + i + '</label><input id="add_mes_image' + i + '" class="mes_image" name="additional_img[]" type="file" value=""/><br /></div>').fadeIn('slow').appendTo('.additional_images');
         $('#add_mes_image' + i).styler();
         if(i>=20){
-            $(this).hide();
+            $(this).remove();
         }
         return false;
     });
