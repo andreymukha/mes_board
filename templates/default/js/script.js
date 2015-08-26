@@ -3,7 +3,8 @@
  */
 
 $(document).ready(function () {
-    var i = 1;
+    var last_image = $('.additional_images div.img:last label').text();
+    var i = last_image.match(/[0-9]+/);
     var dropdowns = $("input.mes_image, input[type='checkbox'], input[type='radio'], select");
     dropdowns.styler();
     $('#add_img').click(function () {
