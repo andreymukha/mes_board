@@ -54,6 +54,7 @@ function getTitle($link, $action, $user){
 				case 'registration': return 'Регистрация'; break;
 				case 'add_message': return 'Добавить объявление'; break;
 				case 'user_messages': return 'Мои объявления'; break;
+				case 'edit_message': return 'Редактирование объявления'; break;
 				case 'view_message':
 					$id = (int)$_GET['id'];
 					$result = getResult(mysqli_query($link, "SELECT title, user_id FROM mes_posts WHERE post_id = '$id'"), TRUE);
@@ -146,37 +147,37 @@ function registration($mysql_link, $data){
 	//todo сделать проверку на количество символов
 
 	if(empty($reg_login)){
-		$msg .= 'Введите логин<br \>';
+		$msg .= 'Введите логин<br>';
 	}
 
 	if(empty($reg_email)){
-		$msg .= 'Введите email<br \>';
+		$msg .= 'Введите email<br>';
 	}
 
 	if(empty($reg_name)){
-		$msg .= 'Введите имя<br \>';
+		$msg .= 'Введите имя<br>';
 	}
 
 	if(empty($reg_pass)){
-		$msg .= 'Введите пароль<br \>';
+		$msg .= 'Введите пароль<br>';
 	}
 
 	if(!empty($reg_pass) and $reg_pass !== $reg_pass_confirm){
-		$msg .= 'Пароли не совпадают<br \>';
+		$msg .= 'Пароли не совпадают<br>';
 	}
 
 	$sql = "SELECT COUNT(*) as cnt FROM mes_users WHERE login = '$reg_login'";
 	$result = mysqli_query($mysql_link, $sql);
 	$result = mysqli_fetch_assoc($result);
 	if($result['cnt'] != 0){
-		$msg .= 'Такой логин уже существует<br \>';
+		$msg .= 'Такой логин уже существует<br>';
 	}
 
 	$sql = "SELECT COUNT(*) as cnt FROM mes_users WHERE email = '$reg_email'";
 	$result = mysqli_query($mysql_link, $sql);
 	$result = mysqli_fetch_assoc($result);
 	if($result['cnt'] != 0){
-		$msg .= 'Такой email уже существует<br \>';
+		$msg .= 'Такой email уже существует<br>';
 	}
 
 	if(!empty($msg)){
@@ -377,6 +378,7 @@ function privileges($mysql_link, $id, $priv_adm) {
 }
 
 function getPrivileges($mysql_link, $id) {
+	$arr = array();
 	$sql = "SELECT mes_privilegies.name AS priv FROM mes_privilegies LEFT JOIN mes_role_priv ON mes_role_priv.priv_id = mes_privilegies.priv_id WHERE mes_role_priv.role_id = '$id'";
 
 	$result = mysqli_query($mysql_link, $sql);
@@ -525,38 +527,38 @@ function addMessage($mysql_link, $data, $user) {
 	$msg = '';
 
 	if(empty($_SESSION['capcha']) or $_SESSION['capcha'] !== $data['capcha']) {
-		$msg .= 'Неправильный код с картинки<br \>';
+		$msg .= 'Неправильный код с картинки<br>';
 	}
 
 	unset($_SESSION['capcha']);
 
 	if(empty($title)) {
-		$msg .= 'Введите название объявления<br \>';
+		$msg .= 'Введите название объявления<br>';
 	}
 
 	if(empty($type)) {
-		$msg .= 'Выберите тип объявления<br \>';
+		$msg .= 'Выберите тип объявления<br>';
 	}
 
 	if(empty($category)) {
-		$msg .= 'Выберите категорию<br \>';
+		$msg .= 'Выберите категорию<br>';
 	}
 
 	if(empty($town)) {
-		$msg .= 'Введите город<br \>';
+		$msg .= 'Введите город<br>';
 	}
 
 	if(empty($price)) {
-		$msg .= 'Введите цену<br \>';
+		$msg .= 'Введите цену<br>';
 	}
 
 	if(empty($body)) {
-		$msg .= 'Введите текст объявления<br \>';
+		$msg .= 'Введите текст объявления<br>';
 	}
 
 
 	if(empty($_FILES['mes_image']['tmp_name'])){
-		$msg .= 'Поле для изображения не должно быть пустым<br \>';
+		$msg .= 'Поле для изображения не должно быть пустым<br>';
 	}
 
 	if(!empty($msg)) {
@@ -655,19 +657,19 @@ function addMessage($mysql_link, $data, $user) {
 			if(empty($_FILES['additional_img']['name'][$i])) continue;
 
 			if(!empty($_FILES['additional_img']['erroe'][$i])) {
-				$msg .= 'Ошибка при загрузке дополнительного изображения '.$cnt.', обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при загрузке дополнительного изображения '.$cnt.', обратитесь к администратору<br>';
 				continue;
 			}
 
 			$mime_img = array_search($_FILES['additional_img']['type'][$i], $mime_types);
 
 			if(!$mime_img) {
-				$msg .= 'Неверный тип дополнительного изображения '.$cnt.', доспускаются только '.implode(', ', array_keys($mime_types)).'<br \>';
+				$msg .= 'Неверный тип дополнительного изображения '.$cnt.', доспускаются только '.implode(', ', array_keys($mime_types)).'<br>';
 				continue;
 			}
 
 			if($_FILES['additional_img']['size'][$i] > (2 * 1024 * 1024)) {
-				$msg .= 'Слишком большое дополнительное изображение '.$i.'<br \>';
+				$msg .= 'Слишком большое дополнительное изображение '.$i.'<br>';
 				continue;
 			}
 
@@ -675,7 +677,7 @@ function addMessage($mysql_link, $data, $user) {
 			$additional_filename = $i.'-'.time().'-'.uniqid().'.'.$additional_filename['extension'];
 
 			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], IMAGES . $additional_filename)) {
-				$msg .= 'Ошибка при копировании дополнительного изображения '.$cnt.', обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при копировании дополнительного изображения '.$cnt.', обратитесь к администратору<br>';
 				continue;
 			}
 
@@ -686,7 +688,7 @@ function addMessage($mysql_link, $data, $user) {
 				$_SESSION['msg']['mess']['body'] = $body;
 				$_SESSION['msg']['mess']['type'] = $type;
 				$_SESSION['msg']['mess']['mes_category'] = $category;
-				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$cnt.', обратитесь к администратору<br \>';
+				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$cnt.', обратитесь к администратору<br>';
 			}
 
 			$additional_images .= $additional_filename.'|';
@@ -724,7 +726,6 @@ function addMessage($mysql_link, $data, $user) {
 }
 
 function img_resize($img, $type) {
-	$img_id = '';
 	ini_set("gd.jpeg_ignore_warning", 1);
 
 	switch($type){
@@ -836,9 +837,205 @@ function getMessage($mysql_link, $id){
 	return $message;
 }
 
+function editMessage($mysql_link, $message_id){
+	$sql = "SELECT * FROM mes_posts WHERE post_id = '$message_id'";
+	$result = mysqli_query($mysql_link, $sql);
+	return getResult($result, TRUE);
+}
 
+function updateMessage($mysql_link, $data, $user) {
+	$id = clearData($mysql_link, $data['message_id'], 'i');
+	$title = clearData($mysql_link, $data['mes_title']);
+	$type = clearData($mysql_link, $data['mes_type'], 'i');
+	$category = clearData($mysql_link, $data['mes_categories'], 'i');
+	$town = clearData($mysql_link, $data['mes_town']);
+	$price = clearData($mysql_link, $data['mes_price']);
+	$body = clearData($mysql_link, $data['mes_body'], 'l');
+	$mime_types = array('jpeg' => 'image/jpeg', 'pjpeg' => 'image/pjpeg', 'png' => 'image/png', 'x-png' => 'image/x-png', 'gif' => 'image/gif',);
 
+	$msg = '';
 
+	if(empty($_SESSION['capcha']) or $_SESSION['capcha'] !== $data['capcha']) {
+		$msg .= 'Неправильный код с картинки<br>';
+	}
+
+	unset($_SESSION['capcha']);
+
+	if(empty($title)) {
+		$msg .= 'Введите название объявления<br>';
+	}
+
+	if(empty($type)) {
+		$msg .= 'Выберите тип объявления<br>';
+	}
+
+	if(empty($category)) {
+		$msg .= 'Выберите категорию<br>';
+	}
+
+	if(empty($town)) {
+		$msg .= 'Введите город<br>';
+	}
+
+	if(empty($price)) {
+		$msg .= 'Введите цену<br>';
+	}
+
+	if(empty($body)) {
+		$msg .= 'Введите текст объявления<br>';
+	}
+
+	if(!empty($msg)) {
+		return setMessage($msg, 'error');
+	}
+
+	$sql = "UPDATE mes_posts SET
+								title='$title',
+								body='$body',
+								town='$town',
+								date=UNIX_TIMESTAMP(),
+								user_id='{$user['user_id']}',
+								category_id='$category',
+								type_id='$type',
+								price='$price',
+								published='0'
+			WHERE post_id='$id'";
+
+	$result = mysqli_query($mysql_link, $sql);
+
+	if(!$result) {
+		return setMessage('Ошибка сохранения статьи, обратитесь к администратору', 'error');
+	}
+
+	if(mysqli_affected_rows($mysql_link) < 1) {
+		return setMessage('Ошибка сохранения статьи, обратитесь к администратору', 'error');
+	}
+
+	//Блок основного изображения. Если оно было загружено через форму, то обновляем его в базе
+	if(!empty($_FILES['mes_image']['tmp_name'])) {
+
+		if(!empty($_FILES['mes_image']['erroe'])) {
+			return setMessage('Ошибка при загрузке файла, обратитесь к администратору', 'error');
+		}
+
+		$mime_img = array_search($_FILES['mes_image']['type'], $mime_types);
+
+		if(!$mime_img) {
+			return setMessage('Неверный тип изображения, доспускаются только ' . implode(', ', array_keys($mime_types)), 'error');
+		}
+
+		if($_FILES['mes_image']['size'] > (2 * 1024 * 1024)) {
+			return setMessage('Слишком большое изображение', 'error');
+		}
+
+		$filename = pathinfo($_FILES['mes_image']['name']);
+		$filename = time() . '-' . uniqid() . '.' . $filename['extension'];
+
+		if(!file_exists(FILES)) {
+			mkdir(FILES, 0755);
+		}
+
+		if(!file_exists(IMAGES)) {
+			mkdir(IMAGES, 0755);
+		}
+
+		if(!file_exists(THUMBNAILS)) {
+			mkdir(THUMBNAILS, 0755);
+		}
+
+		if(!move_uploaded_file($_FILES['mes_image']['tmp_name'], IMAGES . $filename)) {
+			return setMessage('Ошибка при копировании файла, обратитесь к администратору', 'error');
+		}
+
+		if(!img_resize($filename, $mime_img)) {
+			return setMessage('Ошибка при создании уменьшенной копии изображения, обратитесь к администратору' . 'error');
+		}
+
+		$sql = "UPDATE mes_posts SET img='$filename' WHERE post_id='$id'";
+		$result = mysqli_query($mysql_link, $sql);
+
+		if(!$result) {
+			return setMessage('Ошибка сохранения статьи, обратитесь к администратору', 'error');
+		}
+
+		if(mysqli_affected_rows($mysql_link) < 1) {
+			return setMessage('Ошибка сохранения статьи, обратитесь к администратору', 'error');
+		}
+	}
+
+	//Дополнительные изображения
+	$additional_images = '';
+
+	$msg = '';
+
+	$add_files = implode('',$_FILES['additional_img']['name']);
+	if(!empty($add_files)){
+		$result = mysqli_query($mysql_link, "SELECT additional_images FROM mes_posts WHERE post_id='$id'");
+		$add_imgs_db = getResult($result, TRUE);
+		$add_imgs = array();
+		if(!empty($add_imgs_db)){
+			$add_imgs = explode('|', $add_imgs_db['additional_images']);
+		}
+
+		for($i = 0; $i < count($_FILES['additional_img']['name']); $i++){
+			$cnt = $i + 1;
+			if(empty($_FILES['additional_img']['name'][$i])) continue;
+
+			if(!empty($_FILES['additional_img']['erroe'][$i])) {
+				$msg .= 'Ошибка при загрузке дополнительного изображения '.$cnt.', обратитесь к администратору<br>';
+				continue;
+			}
+
+			$mime_img = array_search($_FILES['additional_img']['type'][$i], $mime_types);
+
+			if(!$mime_img) {
+				$msg .= 'Неверный тип дополнительного изображения '.$cnt.', доспускаются только '.implode(', ', array_keys($mime_types)).'<br>';
+				continue;
+			}
+
+			if($_FILES['additional_img']['size'][$i] > (2 * 1024 * 1024)) {
+				$msg .= 'Слишком большое дополнительное изображение '.$i.'<br>';
+				continue;
+			}
+
+			$additional_filename = pathinfo($_FILES['additional_img']['name'][$i]);
+			$additional_filename = $i.'-'.time().'-'.uniqid().'.'.$additional_filename['extension'];
+
+			if(!move_uploaded_file($_FILES['additional_img']['tmp_name'][$i], IMAGES . $additional_filename)) {
+				$msg .= 'Ошибка при копировании дополнительного изображения '.$cnt.', обратитесь к администратору<br>';
+				continue;
+			}
+
+			if(!img_resize($additional_filename, $mime_img)) {
+				$msg .= 'Ошибка при создании уменьшенной копии дополнительного изображения '.$cnt.', обратитесь к администратору<br>';
+			}
+
+			if(!empty($add_imgs) and !empty($add_imgs[$i])){
+				unset($add_imgs[$i]);
+			}
+
+			$additional_images[] = $additional_filename;
+		}
+		$additional_images = array_merge($additional_images, $add_imgs);
+		sort($additional_images);
+
+		if(!empty($msg)) {
+			return setMessage($msg, 'error');
+		}
+
+		$additional_images = implode('|', $additional_images);
+
+		$sql = "UPDATE mes_posts SET additional_images='$additional_images' WHERE post_id='$id'";
+		$result = mysqli_query($mysql_link, $sql);
+
+		if(!$result) {
+			return setMessage('Ошибка при добавлении объявления, обратитесь к администратору', 'error');
+		}
+
+	}
+
+	return TRUE;
+}
 
 
 

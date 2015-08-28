@@ -219,7 +219,12 @@ input[type="checkbox"]{
     text-align: center;
     color: rgb(255, 255, 255);
 }
+
 .unpublish-mess > i {
     display: inline-block;
     font-style: normal;
+}
+
+.img_prev{
+    margin-bottom: 10px;
 }
