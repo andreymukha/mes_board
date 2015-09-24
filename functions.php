@@ -1016,6 +1016,7 @@ function updateMessage($mysql_link, $data, $user) {
 
 			$additional_images[] = $additional_filename;
 		}
+
 		$additional_images = array_merge($additional_images, $add_imgs);
 		sort($additional_images);
 
@@ -1037,10 +1038,39 @@ function updateMessage($mysql_link, $data, $user) {
 	return TRUE;
 }
 
+function deleteMessage($mysql_link, $id){
+	$id = clearData($mysql_link, $id, 'i');
+
+	$sql = "SELECT img, additional_images FROM mes_posts WHERE post_id=$id";
+	$result = mysqli_query($mysql_link, $sql);
+	$imgs = getResult($result, TRUE);
+
+	$images = explode('|', $imgs['additional_images']);
+	array_push($images, $imgs['img']);
+
+	foreach($images as $image){
+		if(file_exists(IMAGES.'/'.$image)){
+			unlink(IMAGES.'/'.$image);
+		}
+		if(file_exists(THUMBNAILS.'/'.$image)){
+			unlink(THUMBNAILS.'/'.$image);
+		}
+	}
+
+	$sql = "DELETE FROM mes_posts WHERE post_id=$id";
+	$result = mysqli_query($mysql_link, $sql);
+
+	if(!$result){
+		return setMessage('Ошибка при удалении объявления, обратитесь к администратору', 'error');
+	}
+
+	return TRUE;
+}
 
 
+function getLinks($mes_id){
 
-
+}
 
 
 

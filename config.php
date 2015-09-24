@@ -42,7 +42,6 @@ define('IMAGES', FILES.'images/');
 
 define('IMG_WIDTH', '200');
 
-
 define('THUMBNAILS', IMAGES.'thumb/');
 
 //define('PERPAGE', '10');
