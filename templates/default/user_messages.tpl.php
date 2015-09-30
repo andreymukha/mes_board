@@ -1,4 +1,3 @@
-<!--@todo Сделать возиожность редактирования для пользователя-->
 <? if(!empty($user_messages)): ?>
 	<? foreach($user_messages as $message): ?>
 		<div class="t_mess unpublished<?= $message['published']; ?>">

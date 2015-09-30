@@ -726,7 +726,7 @@ function addMessage($mysql_link, $data, $user) {
 }
 
 function img_resize($img, $type) {
-	ini_set("gd.jpeg_ignore_warning", 1);
+	ini_set("gd.jpeg_ignore_warning", 0);
 
 	switch($type){
 		case 'jpeg':
@@ -1068,13 +1068,110 @@ function deleteMessage($mysql_link, $id){
 }
 
 
-function getLinks($mes_id){
+function countMessages($mysql_link, $type_id = FALSE, $category_id = FALSE){
+	$sql = "SELECT COUNT(*) as count FROM mes_posts WHERE published='1'";
 
+	if($type_id){
+		$sql .= " AND type_id='$type_id'";
+	}elseif($category_id){
+		$sql .= " AND category_id='$category_id'";
+	}
+
+	$result = mysqli_query($mysql_link, $sql);
+
+	$row = getResult($result, TRUE);
+
+	return $row['count'];
 }
 
+function getMessages($mysql_link, $type = FALSE, $category = FALSE, $page, $perpage){
+	$start = ((int)$page - 1) * (int)$perpage;
+	$sql = "SELECT
+				mes_posts.post_id,
+				mes_posts.title,
+				mes_posts.body,
+				mes_posts.date,
+				mes_posts.town,
+				mes_posts.img,
+				mes_posts.published,
+				mes_posts.is_actual,
+				mes_posts.price,
+				mes_users.user_id AS uid,
+				mes_users.name AS uname,
+				mes_users.email AS uemail,
+				mes_categories.name AS cname,
+				mes_types.name AS tname
+			FROM mes_posts
+			LEFT JOIN mes_users ON mes_users.user_id = mes_posts.user_id
+			LEFT JOIN mes_categories ON mes_categories.category_id = mes_posts.category_id
+			LEFT JOIN mes_types ON mes_types.type_id = mes_posts.type_id
+			WHERE mes_posts.published = '1' AND mes_posts.is_actual = '1'
 
+	";
 
+	if($type){
+		$sql .= " AND type = '$type'";
+	}elseif($category){
+		$sql .= " AND category_id = '$category'";
+	}
 
+	$sql .= " ORDER BY mes_posts.date DESC";
+	$sql .= " LIMIT $start, $perpage";
+
+	$result = mysqli_query($mysql_link, $sql);
+
+	return getResult($result);
+}
+
+function Pager($page, $count, $perpage){
+	$n_pages =  (int)($count/$perpage);
+
+	if($count%$perpage != 0) {
+		$n_pages++;
+	}
+
+	$links = 3;
+
+	if($count < $perpage || $page > $n_pages){
+		return FALSE;
+	}
+
+	$result = array();
+
+	if($page != 1){
+		$result['first'] = 1;
+		$result['prev_page'] = $page - 1;
+	}
+
+	if($page > $links + 1){
+		for($i = $page - $links; $i < $page; $i++){
+			$result['previous'][] = $i;
+		}
+	}else{
+		for($i = 1; $i < $page; $i++){
+			$result['previous'][] = $i;
+		}
+	}
+
+	$result['current'] = $page;
+
+	if($page + $links < $n_pages){
+		for($i = $page + 1; $i <= $page + $links; $i++){
+			$result['next'][] = $i;
+		}
+	}else{
+		for($i = $page + 1; $i <= $n_pages; $i++){
+			$result['next'][] = $i;
+		}
+	}
+
+	if($page != $n_pages){
+		$result['next_page'] = $page + 1;
+		$result['last'] = $n_pages;
+	}
+
+	return $result;
+}
 
 
 

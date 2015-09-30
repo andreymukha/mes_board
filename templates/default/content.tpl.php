@@ -1,70 +1,96 @@
-<div class="t_mess">
-	<h4 class="title_p_mess"><a href="http://board.dev/?action=view_mess&id=8">Ferrari</a></h4>
+<? if(!empty($messages)): ?>
+	<? foreach($messages as $message): ?>
+		<div class="t_mess unpublished<?= $message['published']; ?>">
+			<div class="content">
+				<? if($message['published'] == 0): ?>
+					<div class="unpublish-mess">
+						<i>U</i><i>N</i><i>P</i><i>U</i><i>B</i><i>L</i><i>I</i><i>S</i><i>H</i><i>E</i><i>D</i>
+					</div>
+				<? endif; ?>
 
-	<p class="p_mess_cat">
-		<strong>Категория:</strong> Автомобили |
-		<strong>Тип объявления:</strong> Предложение |
-		<strong>Город:</strong> town </p>
+				<h4 class="title_p_mess">
+					<a href="?action=view_message&id=<?= $message['post_id']; ?>"><?= $message['title']; ?></a>
+				</h4>
 
-	<p class="p_mess_cat">
-		<strong>Дата добавления объявления:</strong> 03.03.2013 |
-		<strong>Цена:</strong> 456 |
-		<strong>Автор</strong> <a href="mailto:meits@mail.ru">Viktor</a>
+				<p class="p_mess_cat">
+					<strong>Категория:</strong> <?= $message['cname']; ?> |
+					<strong>Тип объявления:</strong> <?= $message['tname']; ?> |
+					<strong>Город:</strong> <?= $message['town']; ?>
+				</p>
 
-	</p>
+				<p class="p_mess_cat">
+					<strong>Дата добавления объявления:</strong> <?= date('d.m.Y - H:i:s', $message['date']); ?> |
+					<strong>Цена:</strong> <?= $message['price']; ?> |
+					<strong>Автор</strong> <a href="mailto:<?= $message['uemail']; ?>"><?= $message['uname']; ?></a>
+				</p>
 
-	<p><img class="mini_mess" src="images/Lighthouse.jpg">От
-		автора: любое хорошее веб-приложdfgdfgfdgение содержит разделы, доступ к
-		которым должен быть ограничен для обычного пользователя. Поэтому у
-		разработчиков очень часто возникает задача – создания системы
-		авторизации пользователей на сайте, которая предусматривает вывод
-		количества пользователей on-line, а также разделения по ролям и
-		привилегиям пользователей. В сегодняшнем уроке мы с Вами займемся
-		реализацией этой задачи, применительно к сайту написанному с помощью
-		объектно-ориентированного подхода.<br>
-		<br>
-		Этот урок будет состоять из двух частей... </p>
+				<p>
+					<img class="mini_mess" src="<?= THUMBNAILS . $message['img']; ?>">
+					<?= nl2br($message['body']); ?>
+				</p>
+			</div>
 
+			<div class="clearfix"></div>
+			<div class="links">
+				<ul>
+					<li><a href="?action=edit_message&id=<?=$message['post_id'];?>">Редактировать</a></li>
+					<li><a href="?action=view_message&delete=<?=$message['post_id'];?>">Удалить</a></li>
+					<li><a href="?action=view_message&id=<?= $message['post_id']; ?>">Подробнее</a></li>
+				</ul>
+			</div>
+		</div>
+	<? endforeach; ?>
+	
+	<? if($pager) : ?>
+		<ul class="pager">
+			<? if($pager['first']) : ?>
+				<li class="first">
+					<a href="?action=main&page=1<?= $type; ?>">Первая</a>
+				</li>
+			<? endif; ?>
 
-</div>
-<div class="t_mess">
-	<h4 class="title_p_mess"><a href="http://board.dev/?action=view_mess&id=7">Mercedes</a></h4>
+			<? if($pager['prev_page']) : ?>
+				<li>
+					<a href="?action=main&page=<?= $pager['prev_page'] ?><?= $type; ?>">&lt;</a>
+				</li>
+			<? endif; ?>
 
-	<p class="p_mess_cat">
-		<strong>Категория:</strong> Автомобили |
-		<strong>Тип объявления:</strong> Предложение |
-		<strong>Город:</strong> sdfsdf </p>
+			<? if($pager['previous']) : ?>
+				<? foreach($pager['previous'] as $val) : ?>
+					<li>
+						<a href="?action=main&page=<?= $val; ?><?= $type; ?>"><?= $val; ?></a>
+					</li>
+				<? endforeach; ?>
+			<? endif; ?>
 
-	<p class="p_mess_cat">
-		<strong>Дата добавления объявления:</strong> 03.03.2013 |
-		<strong>Цена:</strong> 56 |
-		<strong>Автор</strong> <a href="mailto:meits@mail.ru">Viktor</a>
+			<? if($pager['current']) : ?>
+				<li>
+					<span><?= $pager['current']; ?></span>
+				</li>
+			<? endif; ?>
 
-	</p>
+			<? if($pager['next']) : ?>
+				<? foreach($pager['next'] as $v) : ?>
+					<li>
+						<a href="?action=main&page=<?= $v; ?><?= $type; ?>"><?= $v; ?></a>
+					</li>
+				<? endforeach; ?>
+			<? endif; ?>
 
-	<p><img class="mini_mess" src="images/Desert.jpg">От
-		автора: любое хорошее веб-приложениhhе содержит разделы, доступ к
-		которым должен быть ограничен для обычного пользователя. Поэтому у
-		разработчиков очень часто возникает задача – создания системы
-		авторизации пользователей на сайте, которая предусматривает вывод
-		количества пользователей on-line, а также разделения по ролям и
-		привилегиям пользователей. В сегодняшнем уроке мы с Вами займемся
-		реализацией этой задачи, применительно к сайту написанному с помощью
-		объектно-ориентированного подхода.<br>
-		<br>
-		Этот урок будет состоять из двух частей и... </p>
-</div>
-<ul class="pager">
-	<li>
-		<span>1</span>
-	</li>
-	<li>
-		<a href="http://board.dev/?action=main&page=2">2</a>
-	</li>
-	<li>
-		<a href="http://board.dev/?action=main&page=2">&gt;</a>
-	</li>
-	<li class="last">
-		<a href="http://board.dev/?action=main&page=2">Последняя</a>
-	</li>
-</ul>
+			<? if($pager['next_page']) : ?>
+				<li>
+					<a href="?action=main&page=<?= $pager['next_page'] ?><?= $type; ?>">&gt;</a>
+				</li>
+			<? endif; ?>
+
+			<? if($pager['last']) : ?>
+				<li class="last">
+					<a href="?action=main&page=<?= $pager['last'] ?><?= $type; ?>">Последняя</a>
+				</li>
+			<? endif; ?>
+		</ul>
+	<? endif; ?>
+	
+<? else: ?>
+	<p>На данной странице нет объявлений</p>
+<? endif; ?>

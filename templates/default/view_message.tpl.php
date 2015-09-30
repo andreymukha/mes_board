@@ -1,4 +1,3 @@
-<!--@todo Сделать возиожность редактирования для пользователя-->
 <? if(!empty($message) and is_array($message)): ?>
 	<div class="t_mess unpublished<?= $message['published']; ?>">
 		<div class="content">
