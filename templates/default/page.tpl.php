@@ -13,6 +13,11 @@
 	</div>
 	<div id="menu">
 		<ul>
+			<?if($action != 'index' and (isset($_GET['page']) or isset($_GET['type']))):?>
+				<li><a href="/">Главная</a></li>
+			<?else:?>
+				<li>Главная</li>
+			<?endif;?>
 			<? if(!empty($user) and is_array($user)): ?>
 				<? if($add_mess): ?>
 					<li><a href="?action=add_message">Добавить объявление</a></li>
