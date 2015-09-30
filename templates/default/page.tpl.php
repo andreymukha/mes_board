@@ -13,7 +13,7 @@
 	</div>
 	<div id="menu">
 		<ul>
-			<?if($action != 'index' and (isset($_GET['page']) or isset($_GET['type']))):?>
+			<?if($action != 'index' or (isset($_GET['page']) or isset($_GET['type']))):?>
 				<li><a href="/">Главная</a></li>
 			<?else:?>
 				<li>Главная</li>
@@ -26,7 +26,7 @@
 			<? endif; ?>
 			<? if($types and is_array($types)): ?>
 				<? foreach($types as $item): ?>
-					<li><a href="?action=main&type=<?=$item['type_id'];?>"><?=$item['name']?></a></li>
+					<li><a href="?type=<?=$item['type_id'];?>"><?=$item['name']?></a></li>
 				<? endforeach; ?>
 			<? endif; ?>
 		</ul>

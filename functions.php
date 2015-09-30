@@ -42,14 +42,24 @@ function setMessage($message, $type = 'info') {
 	return template('system_message.tpl.php', array('message' => $message, 'type' => $type));
 }
 
-function getTitle($link, $action, $user){
+function getTitle($link, $action, $user, $types){
 	foreach(scandir('actions') as $dir){
 		if($dir == '..' or $dir == '.') continue;
 		$dir = explode('.', $dir);
 		$dir = $dir[0];
 		if($action == $dir){
 			switch($action){
-				case 'index': return 'Главная страница'; break;
+				case 'index':
+					if(empty($_GET) or (isset($_GET['page']) and !isset($_GET['type']))){
+						return 'Главная страница';
+					}elseif(isset($_GET['type'])){
+						foreach($types as $type){
+							if(array_search($_GET['type'], $type)){
+								return $type['name'];
+							}
+						}
+					}
+					break;
 				case 'login': return 'Авторизация'; break;
 				case 'registration': return 'Регистрация'; break;
 				case 'add_message': return 'Добавить объявление'; break;
@@ -1110,9 +1120,9 @@ function getMessages($mysql_link, $type = FALSE, $category = FALSE, $page, $perp
 	";
 
 	if($type){
-		$sql .= " AND type = '$type'";
+		$sql .= " AND mes_posts.type_id = '$type'";
 	}elseif($category){
-		$sql .= " AND category_id = '$category'";
+		$sql .= " AND mes_posts.category_id = '$category'";
 	}
 
 	$sql .= " ORDER BY mes_posts.date DESC";
