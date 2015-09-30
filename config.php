@@ -44,7 +44,7 @@ define('IMG_WIDTH', '200');
 
 define('THUMBNAILS', IMAGES.'thumb/');
 
-//define('PERPAGE', '10');
+define('PERPAGE', '2');
 
 $mysql_link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die(mysqli_error($mysql_link));
 

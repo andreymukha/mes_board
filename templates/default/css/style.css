@@ -134,22 +134,6 @@ html, body, div, h2, ul {
     padding: 3px;
 }
 
-.pager li {
-    list-style: none;
-    display: block;
-    width: 20px;
-    padding: 10px;
-    float: left
-}
-
-.pager li.first {
-    width: 50px;
-}
-
-.pager li.last {
-    width: 80px;
-}
-			
 /*Новые стили*/
 
 .t_mess {
