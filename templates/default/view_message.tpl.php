@@ -21,11 +21,13 @@
 
 			<div class="body">
 				<div class="mini_mess">
-					<img src="<?= THUMBNAILS . $message['img']; ?>">
+					<a class="group1" href="<?= IMAGES . $message['img']; ?>"><img src="<?= THUMBNAILS . $message['img']; ?>"></a>
 					<?if(!empty($additional_images)):?>
 						<?foreach($additional_images as $add_img):?>
 							<?if(!empty($add_img)):?>
-								<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
+								<a class="group1" href="<?= IMAGES . $add_img; ?>">
+									<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
+								</a>
 							<?endif;?>
 						<?endforeach;?>
 					<?endif;?>

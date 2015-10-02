@@ -16,4 +16,21 @@ $(document).ready(function () {
         }
         return false;
     });
+
+    //Подключаем колорбокс
+    function colorBoxGroup() {
+        var colorBoxGroup = $('.group1');
+        if ( colorBoxGroup.length ) {
+            colorBoxGroup.colorbox({
+                rel: 'group1',
+                maxWidth: "100%",
+                maxHeight: "100%"
+            });
+        }
+    }
+
+    // Call functions
+    $(function() {
+        colorBoxGroup();
+    });
 });
