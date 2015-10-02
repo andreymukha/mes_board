@@ -42,7 +42,7 @@ function setMessage($message, $type = 'info') {
 	return template('system_message.tpl.php', array('message' => $message, 'type' => $type));
 }
 
-function getTitle($link, $action, $user, $types){
+function getTitle($link, $action, $user, $types, $cat){
 	foreach(scandir('actions') as $dir){
 		if($dir == '..' or $dir == '.') continue;
 		$dir = explode('.', $dir);
@@ -56,6 +56,16 @@ function getTitle($link, $action, $user, $types){
 						foreach($types as $type){
 							if(array_search($_GET['type'], $type)){
 								return $type['name'];
+							}
+						}
+					}elseif(isset($_GET['cat'])){
+						foreach($cat as $category_id => $category){
+							if(isset($category['parent']) and is_array($category['parent'])){
+								foreach($category['parent'] as $p_category_id => $p_category){
+									if($p_category_id == (int)$_GET['cat']){
+										return 'Категория: '.$p_category;
+									}
+								}
 							}
 						}
 					}
@@ -1095,7 +1105,8 @@ function countMessages($mysql_link, $type_id = FALSE, $category_id = FALSE){
 
 	if($type_id){
 		$sql .= " AND type_id='$type_id'";
-	}elseif($category_id){
+	}
+	if($category_id){
 		$sql .= " AND category_id='$category_id'";
 	}
 

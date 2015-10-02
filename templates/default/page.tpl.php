@@ -13,7 +13,7 @@
 	</div>
 	<div id="menu">
 		<ul>
-			<?if($action != 'index' or (isset($_GET['page']) or isset($_GET['type']))):?>
+			<?if($action != 'index' or (isset($_GET['page']) or isset($_GET['type']) or isset($_GET['cat']))):?>
 				<li><a href="/">Главная</a></li>
 			<?else:?>
 				<li>Главная</li>
@@ -45,7 +45,7 @@
 								</strong>
 								<ul>
 									<? foreach($category['parent'] as $p_category_id => $p_category): ?>
-										<li>- <a href="?action=categories&id=<?=$p_category_id?>"><?=$p_category?></a></li>
+										<li>- <a href="?cat=<?=$p_category_id?>"><?=$p_category?></a></li>
 									<? endforeach; ?>
 								</ul>
 							<? endif; ?>

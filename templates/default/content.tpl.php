@@ -45,20 +45,20 @@
 		<ul class="pager">
 			<? if($pager['first']) : ?>
 				<li class="first">
-					<a href="?page=1<?= $type; ?>">Первая</a>
+					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=1">Первая</a>
 				</li>
 			<? endif; ?>
 
 			<? if($pager['prev_page']) : ?>
 				<li>
-					<a href="?page=<?= $pager['prev_page'] ?><?= $type; ?>">&lt;</a>
+					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['prev_page'] ?>">&lt;</a>
 				</li>
 			<? endif; ?>
 
 			<? if($pager['previous']) : ?>
 				<? foreach($pager['previous'] as $val) : ?>
 					<li>
-						<a href="?page=<?= $val; ?><?= $type; ?>"><?= $val; ?></a>
+						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $val; ?>"><?= $val; ?></a>
 					</li>
 				<? endforeach; ?>
 			<? endif; ?>
@@ -72,20 +72,20 @@
 			<? if($pager['next']) : ?>
 				<? foreach($pager['next'] as $v) : ?>
 					<li>
-						<a href="?page=<?= $v; ?><?= $type; ?>"><?= $v; ?></a>
+						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $v; ?>"><?= $v; ?></a>
 					</li>
 				<? endforeach; ?>
 			<? endif; ?>
 
 			<? if($pager['next_page']) : ?>
 				<li>
-					<a href="?page=<?= $pager['next_page'] ?><?= $type; ?>">&gt;</a>
+					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['next_page'] ?>">&gt;</a>
 				</li>
 			<? endif; ?>
 
 			<? if($pager['last']) : ?>
 				<li class="last">
-					<a href="?page=<?= $pager['last'] ?><?= $type; ?>">Последняя</a>
+					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['last'] ?>">Последняя</a>
 				</li>
 			<? endif; ?>
 		</ul>
