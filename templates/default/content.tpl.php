@@ -1,6 +1,6 @@
 <? if(!empty($messages)): ?>
 	<? foreach($messages as $message): ?>
-		<div class="t_mess unpublished<?= $message['published']; ?>">
+		<article class="message <?= 'unpublished'.$message['published']; ?>">
 			<div class="content">
 				<? if($message['published'] == 0): ?>
 					<div class="unpublish-mess">
@@ -38,7 +38,7 @@
 					<li><a href="?action=view_message&id=<?= $message['post_id']; ?>">Подробнее</a></li>
 				</ul>
 			</div>
-		</div>
+		</article>
 	<? endforeach; ?>
 	
 	<? if($pager) : ?>

@@ -22,7 +22,7 @@ if(!$action){
 	$action = 'index';
 }
 
-$title = getTitle($mysql_link, $action, $user);
+$title = getTitle($mysql_link, $action, $user, $types);
 
 if(file_exists('actions/' . $action . '.inc.php')){
 	include 'actions/' . $action . '.inc.php';

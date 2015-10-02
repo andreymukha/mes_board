@@ -765,7 +765,19 @@ function img_resize($img, $type) {
 
 	@imagecopyresampled($img_bg_id, $img_id, 0, 0, 0, 0, $img_resized_width, $img_resized_height, $img_with, $img_height);
 
-	$img = @imagejpeg($img_bg_id, THUMBNAILS.$img, 100);
+	switch($type){
+		case 'jpeg':
+		case 'pjpeg':
+			$img = @imagejpeg($img_bg_id, THUMBNAILS.$img, 100);
+			break;
+		case 'png':
+		case 'xpng':
+			$img = @imagepng($img_bg_id, THUMBNAILS.$img);
+			break;
+		case 'gif':
+			$img = @imagegif($img_bg_id, THUMBNAILS.$img);
+			break;
+	}
 
 	@imagedestroy($img_id);
 	@imagedestroy($img_bg_id);
@@ -924,7 +936,7 @@ function updateMessage($mysql_link, $data, $user) {
 	//Блок основного изображения. Если оно было загружено через форму, то обновляем его в базе
 	if(!empty($_FILES['mes_image']['tmp_name'])) {
 
-		if(!empty($_FILES['mes_image']['erroe'])) {
+		if(!empty($_FILES['mes_image']['error'])) {
 			return setMessage('Ошибка при загрузке файла, обратитесь к администратору', 'error');
 		}
 
@@ -1116,12 +1128,12 @@ function getMessages($mysql_link, $type = FALSE, $category = FALSE, $page, $perp
 			LEFT JOIN mes_categories ON mes_categories.category_id = mes_posts.category_id
 			LEFT JOIN mes_types ON mes_types.type_id = mes_posts.type_id
 			WHERE mes_posts.published = '1' AND mes_posts.is_actual = '1'
-
 	";
 
 	if($type){
 		$sql .= " AND mes_posts.type_id = '$type'";
-	}elseif($category){
+	}
+	if($category){
 		$sql .= " AND mes_posts.category_id = '$category'";
 	}
 

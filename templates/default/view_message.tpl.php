@@ -1,5 +1,5 @@
 <? if(!empty($message) and is_array($message)): ?>
-	<div class="t_mess unpublished<?= $message['published']; ?>">
+	<div class="message unpublished<?= $message['published']; ?>">
 		<div class="content">
 			<? if($message['published'] == 0): ?>
 				<div class="unpublish-mess">

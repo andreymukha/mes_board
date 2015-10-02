@@ -1,6 +1,6 @@
 <? if(!empty($user_messages)): ?>
 	<? foreach($user_messages as $message): ?>
-		<div class="t_mess unpublished<?= $message['published']; ?>">
+		<div class="message unpublished<?= $message['published']; ?>">
 			<div class="content">
 				<? if($message['published'] == 0): ?>
 					<div class="unpublish-mess">

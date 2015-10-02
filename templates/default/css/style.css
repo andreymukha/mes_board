@@ -136,7 +136,7 @@ html, body, div, h2, ul {
 
 /*Новые стили*/
 
-.t_mess {
+.message {
     border-bottom: 1px dashed gray;
     width: 100%;
     padding: 5px;
@@ -211,4 +211,8 @@ input[type="checkbox"]{
 
 .img_prev{
     margin-bottom: 10px;
+}
+
+#wrapper article div.clearfix{
+    display: block;
 }
