@@ -23,6 +23,4 @@ if($cat){
 	$cat = '&cat='.$cat;
 }
 
-
-
 $content = template('content.tpl.php', array('title' => 'Главная страница', 'messages' => $messages, 'pager' => $pager, 'type' => $type, 'cat' => $cat));

@@ -42,6 +42,29 @@ function setMessage($message, $type = 'info') {
 	return template('system_message.tpl.php', array('message' => $message, 'type' => $type));
 }
 
+/**
+ * Генерирует заголовки всех страниц.
+ *
+ * @param resource $link
+ * 		Соединение с базой данных
+ *
+ * @param string $action
+ * 		Текущий контроллер
+ *
+ * @param array $user
+ * 		Массив с данными текущего пользователя
+ *
+ * @param array $types
+ * 		Текщий тип объявления (Спрос/Предложение)
+ *
+ * @param array $cat
+ * 		Текущая категория объявления
+ *
+ * @return string
+ * 		Заголовок страницы
+ *
+ * @author Fly
+ */
 function getTitle($link, $action, $user, $types, $cat){
 	foreach(scandir('actions') as $dir){
 		if($dir == '..' or $dir == '.') continue;
@@ -50,6 +73,7 @@ function getTitle($link, $action, $user, $types, $cat){
 		if($action == $dir){
 			switch($action){
 				case 'index':
+					//Смотрим используются ли типы, категории или мы просто на главной странице
 					if(empty($_GET) or (isset($_GET['page']) and !isset($_GET['type'])and !isset($_GET['cat']))){
 						return 'Главная страница';
 					}elseif(isset($_GET['type'])){
@@ -77,6 +101,7 @@ function getTitle($link, $action, $user, $types, $cat){
 				case 'edit_message': return 'Редактирование объявления'; break;
 				case 'view_message':
 					$id = (int)$_GET['id'];
+					//Получаем заголовок объявления
 					$result = getResult(mysqli_query($link, "SELECT title, user_id FROM mes_posts WHERE post_id = '$id'"), TRUE);
 					if($result['user_id'] != $user['user_id']){
 						return '';
@@ -156,6 +181,7 @@ function template($path, $vars = array()){
  * @author Fly
  */
 function registration($mysql_link, $data){
+	//Очищаем данные, которые ввёл пользователь
 	$reg_login = clearData($mysql_link, $data['reg_login']);
 	$reg_email = clearData($mysql_link, $data['reg_email']);
 	$reg_name = clearData($mysql_link, $data['reg_name']);
@@ -186,6 +212,7 @@ function registration($mysql_link, $data){
 		$msg .= 'Пароли не совпадают<br>';
 	}
 
+	//Смотрим есть ли пользователь с таким же логином
 	$sql = "SELECT COUNT(*) as cnt FROM mes_users WHERE login = '$reg_login'";
 	$result = mysqli_query($mysql_link, $sql);
 	$result = mysqli_fetch_assoc($result);
@@ -193,6 +220,7 @@ function registration($mysql_link, $data){
 		$msg .= 'Такой логин уже существует<br>';
 	}
 
+	//Смотрим есть ли пользователь с таким же email адресом
 	$sql = "SELECT COUNT(*) as cnt FROM mes_users WHERE email = '$reg_email'";
 	$result = mysqli_query($mysql_link, $sql);
 	$result = mysqli_fetch_assoc($result);
@@ -226,6 +254,7 @@ function registration($mysql_link, $data){
 		return setMessage('Ошибка при регистрации, обратитесь к администратору или попробуйте зарегистрироваться позже', 'error');
 	}
 
+	//Отправляем письмо пользователю с активационным кодом
 	$mail_headers = '';
 	$mail_headers .= "From: Стройкасса <admin@stroikassa.com> \r\n";
 	$mail_headers .= "Content-Type: text/plain; charset=utf8";
@@ -267,11 +296,14 @@ function activation($mysql_link, $hash){
  * Функция авторизует пользователя
  *
  * @param $mysql_link
- * 	Соединение с базой данных
+ * 		Соединение с базой данных
  *
- * @param $data
+ * @param array $data
+ * 		Логин и пароль пользователя
  *
  * @return bool|string
+ * 		При успешной авторизации возвращается булево TRUE, при ошибке
+ * 		возвращается строка, содержащая ошибку.
  *
  * @author Fly
  */
@@ -287,6 +319,7 @@ function login($mysql_link, $data){
 	$login = clearData($mysql_link, $data['auth_login']);
 	$password = md5(trim($data['auth_password']));
 
+	//Делаем запрос к базе, проверяем правильно ли введены данные пользователя
 	$sql = "SELECT user_id, active FROM mes_users WHERE login='%s' AND password='%s'";
 	$sql = sprintf($sql, $login, $password);
 	$result = mysqli_query($mysql_link, $sql);
@@ -301,6 +334,7 @@ function login($mysql_link, $data){
 		return setMessage('Ваша учётная запись не активирована, пожалуйста, активируйте вашу учётную запись по ссылке из письма у вас в почтовом ящике', 'warning');
 	}
 
+	//Сохраняем новую сессию авторизации
 	$sess = md5(microtime());
 	$sql = "UPDATE mes_users SET sess='$sess' WHERE login='%s'";
 	$sql = sprintf($sql, $login);
@@ -311,6 +345,7 @@ function login($mysql_link, $data){
 
 	$_SESSION['sess'] = $sess;
 
+	//Устанавливаем куки пользователю
 	if($data['remember'] == 'on'){
 		$time = time() + (30*24*3600);
 		setcookie('uid', $confirm['user_id'], $time);
@@ -325,7 +360,19 @@ function login($mysql_link, $data){
 	return TRUE;
 }
 
+/**
+ * Проверяет текущего пользователя по сессии или кукам и загружает его
+ *
+ * @param $mysql_link
+ * 		Соединение с базой данных
+ *
+ * @return array|bool
+ * 		При ошибке возвращается FALSE, при успехе массив с данными о пользователе
+ *
+ * @author Fly
+ */
 function checkUser($mysql_link){
+	//Проверяем сессию пользователя
 	if(isset($_SESSION['sess'])){
 		$sess = $_SESSION['sess'];
 		$sql = "SELECT user_id, login, name, email, role_id, created, last_login FROM mes_users WHERE sess='$sess' AND active='1'";
@@ -337,6 +384,7 @@ function checkUser($mysql_link){
 
 		return mysqli_fetch_assoc($result);
 
+		//Проверяе куки пользователя
 	}elseif(isset($_COOKIE['login']) and isset($_COOKIE['password'])){
 		$login = clearData($mysql_link, $_COOKIE['login']);
 		$password = clearData($mysql_link, $_COOKIE['password']);
@@ -348,6 +396,7 @@ function checkUser($mysql_link){
 			return FALSE;
 		}
 
+		//Записываем новую сессию в базу после логина
 		$sess = md5(microtime());
 		$sql = "UPDATE mes_users SET sess='$sess' WHERE `login`='%s'";
 		$sql = sprintf($sql, $login);
@@ -364,6 +413,14 @@ function checkUser($mysql_link){
 	}
 }
 
+/**
+ * Функция реализует выход пользователя из системы, удаляются все куки и уничтожается сессия
+ *
+ * @return bool
+ * 		TRUE при успешном выходе
+ *
+ * @author Fly
+ */
 function logout(){
 	unset($_SESSION['sess']);
 	if(!setcookie('login', '', time()-3600)){
@@ -437,6 +494,17 @@ function getResult($result, $limit = FALSE){
 	return $list;
 }
 
+/**
+ * Получаем доступные типы объявлений (Спрос/Предложение)
+ *
+ * @param $mysql_link
+ * 		Соединение с базой данных
+ *
+ * @return array|bool
+ * 		Массив с типами или FALSE при неудаче
+ *
+ * @author Fly
+ */
 function get_type($mysql_link){
 	$sql = "SELECT type_id, name FROM mes_types";
 	$result = mysqli_query($mysql_link, $sql);
