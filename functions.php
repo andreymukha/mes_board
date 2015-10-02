@@ -2,13 +2,11 @@
 
 /**
  * Функция возвращает системное сообщение в отформатированном div блоке,
- * используется для вывода сообщения сообщения в
+ * используется для вывода сообщения в
  * функциях с последующим сохранением в сессионной переменной, выводится в шаблоне page.tpl.php
  *
  * @param string $message
  *    (обязательно) Сообщение для вывода на экран.
- *
- * @see http://getbootstrap.com/components/#alerts Читать подробнее о типах сообщений
  *
  * @param string $type
  *    (опционально) Тип сообщения. По умолчанию 'info', доступные значения:
@@ -16,6 +14,8 @@
  *        - 'info' (alert-info)
  *        - 'warning' (alert-warning)
  *        - 'error' (alert-danger)
+ *
+ * @see http://getbootstrap.com/components/#alerts Читать подробнее о типах сообщений
  *
  * @return string
  *    Отформатированное сообщение
@@ -26,16 +26,16 @@ function setMessage($message, $type = 'info') {
 	switch($type){
 		case 'success':
 			$type = 'alert-success';
-		break;
+			break;
 		case 'warning':
 			$type = 'alert-warning';
-		break;
+			break;
 		case 'error':
 			$type = 'alert-danger';
-		break;
+			break;
 		case 'info':
 			$type = 'alert-info';
-		break;
+			break;
 		default:
 			$type = 'alert-info';
 	}
@@ -50,7 +50,7 @@ function getTitle($link, $action, $user, $types, $cat){
 		if($action == $dir){
 			switch($action){
 				case 'index':
-					if(empty($_GET) or (isset($_GET['page']) and !isset($_GET['type']))){
+					if(empty($_GET) or (isset($_GET['page']) and !isset($_GET['type'])and !isset($_GET['cat']))){
 						return 'Главная страница';
 					}elseif(isset($_GET['type'])){
 						foreach($types as $type){
@@ -111,7 +111,7 @@ function clearData($link, $data, $type="s"){
 	$result = '';
 	switch($type){
 		case "s": $result = mysqli_real_escape_string($link, trim(strip_tags($data))); break;
-		case "l": $result = mysqli_real_escape_string($link, trim(strip_tags($data, '<p><a><div><br><br /><span><div>'))); break;
+		case "l": $result = mysqli_real_escape_string($link, trim(strip_tags($data, '<p><a><div><br><br /><span><strong>'))); break;
 		case "i": $result = abs((int)$data); break;
 	}
 	return $result;
