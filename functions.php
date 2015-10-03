@@ -102,8 +102,8 @@ function getTitle($link, $action, $user, $types, $cat){
 				case 'view_message':
 					$id = (int)$_GET['id'];
 					//Получаем заголовок объявления
-					$result = getResult(mysqli_query($link, "SELECT title, user_id FROM mes_posts WHERE post_id = '$id'"), TRUE);
-					if($result['user_id'] != $user['user_id']){
+					$result = getResult(mysqli_query($link, "SELECT title, published, user_id FROM mes_posts WHERE post_id = '$id'"), TRUE);
+					if($result['published'] != 1 and $result['user_id'] != $user['user_id']){
 						return '';
 					}
 					return $result['title'];

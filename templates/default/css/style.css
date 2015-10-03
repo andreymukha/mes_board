@@ -97,11 +97,6 @@ html, body, div, h2, ul {
     color: #4e4e5f;
 }
 
-.not_confirm, .not_actual {
-    color: red;
-    text-align: center;
-}
-
 .title_p_mess {
     background-color: #e6ffe8;
     border-bottom: 1px solid gray;
@@ -115,7 +110,7 @@ html, body, div, h2, ul {
 }
 
 .mini_mess {
-    margin: 5px;
+    margin: 0 5px 5px 0;
     width: 205px;
     float: left;
 }
@@ -215,4 +210,48 @@ input[type="checkbox"]{
 
 #wrapper article div.clearfix{
     display: block;
+}
+
+.mini_mess *{
+    box-sizing: unset;
+}
+
+.mini_mess .additional img{
+    width: 65px;
+}
+
+.mini_mess a{
+    outline: none;
+}
+
+.mini_mess .connected-carousels .stage{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.mini_mess .connected-carousels .prev-stage,
+.mini_mess .connected-carousels .next-stage{
+    width: 65px;
+    height: 200px;
+}
+
+.mini_mess .connected-carousels .carousel-stage{
+    border: none;
+    box-shadow: none;
+    height: auto;
+}
+
+.mini_mess .connected-carousels .navigation{
+    margin: 10px auto;
+    width: 160px;
+}
+
+.mini_mess .connected-carousels .carousel-navigation{
+    width: 140px;
+}
+
+.mini_mess .navigation ul li img{
+    height: 50px;
 }

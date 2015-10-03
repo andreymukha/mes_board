@@ -21,16 +21,50 @@
 
 			<div class="body">
 				<div class="mini_mess">
-					<a class="group1" href="<?= IMAGES . $message['img']; ?>"><img src="<?= THUMBNAILS . $message['img']; ?>"></a>
-					<?if(!empty($additional_images)):?>
-						<?foreach($additional_images as $add_img):?>
-							<?if(!empty($add_img)):?>
-								<a class="group1" href="<?= IMAGES . $add_img; ?>">
-									<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
-								</a>
-							<?endif;?>
-						<?endforeach;?>
-					<?endif;?>
+
+					<div class="connected-carousels">
+						<div class="stage">
+							<div class="carousel carousel-stage">
+								<ul>
+									<li><a class="group1" href="<?= IMAGES . $message['img']; ?>"><img src="<?= THUMBNAILS . $message['img']; ?>"></a></li>
+
+									<?foreach($additional_images as $add_img):?>
+										<?if(!empty($add_img)):?>
+											<li>
+												<a class="group1" href="<?= IMAGES . $add_img; ?>">
+													<img src="<?= THUMBNAILS . $add_img; ?>">
+												</a>
+											</li>
+										<?endif;?>
+									<?endforeach;?>
+								</ul>
+							</div>
+
+							<a href="#" class="prev prev-stage"><span>&lsaquo;</span></a>
+							<a href="#" class="next next-stage"><span>&rsaquo;</span></a>
+						</div>
+						<?if(!empty($additional_images[0]) or count($additional_images) > 1):?>
+						<div class="navigation">
+							<a href="#" class="prev prev-navigation">&lsaquo;</a>
+							<a href="#" class="next next-navigation">&rsaquo;</a>
+							<div class="carousel carousel-navigation">
+								<ul>
+									<li><a class="group1" href="<?= IMAGES . $message['img']; ?>"><img src="<?= THUMBNAILS . $message['img']; ?>"></a></li>
+									<?foreach($additional_images as $add_img):?>
+										<?if(!empty($add_img)):?>
+											<li class="additional">
+												<a class="group1" href="<?= IMAGES . $add_img; ?>">
+													<img style="width: 65px" src="<?= THUMBNAILS . $add_img; ?>">
+												</a>
+											</li>
+										<?endif;?>
+									<?endforeach;?>
+								</ul>
+							</div>
+						</div>
+						<?endif;?>
+					</div>
+
 				</div>
 				<?= nl2br($message['body']); ?>
 			</div>

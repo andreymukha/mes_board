@@ -29,6 +29,12 @@ $(document).ready(function () {
         }
     }
 
+    $(function() {
+        $('.jcarousel').jcarousel({
+
+        });
+    });
+
     // Call functions
     $(function() {
         colorBoxGroup();
