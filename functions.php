@@ -228,6 +228,18 @@ function registration($mysql_link, $data){
 		$msg .= 'Такой email уже существует<br>';
 	}
 
+	if(strlen($reg_login) < 4){
+		$msg .= 'Логин должен быть не меньше 4х символов<br>';
+	}
+
+	if(strlen($reg_name) < 2){
+		$msg .= 'Логин должен быть не меньше 2х символов<br>';
+	}
+
+	if(strlen($reg_pass) < 6){
+		$msg .= 'Логин должен быть не меньше 6х символов<br>';
+	}
+
 	if(!empty($msg)){
 		$_SESSION['msg']['reg'] = array(
 			'login' => $reg_login,
@@ -649,6 +661,22 @@ function addMessage($mysql_link, $data, $user) {
 		$msg .= 'Поле для изображения не должно быть пустым<br>';
 	}
 
+	if(strlen($title) < 10){
+		$msg .= 'Заголовок слишком короткий<br>';
+	}
+
+	if(strlen($body) < 100){
+		$msg .= 'Текст объявления слишком короткий<br>';
+	}
+
+	if(strlen($price) < 2){
+		$msg .= 'Цена не может содержать только одну цифру<br>';
+	}
+
+	if($price[0] == '0' or $price == '0'){
+		$msg .= 'Цена не должна ровняться нулю или начинаться с нуля<br>';
+	}
+
 	if(!empty($msg)) {
 		$_SESSION['msg']['mess']['title'] = $title;
 		$_SESSION['msg']['mess']['town'] = $town;
@@ -943,7 +971,7 @@ function editMessage($mysql_link, $message_id){
 	return getResult($result, TRUE);
 }
 
-function updateMessage($mysql_link, $data, $user) {
+function updateMessage($mysql_link, $data) {
 	$id = clearData($mysql_link, $data['message_id'], 'i');
 	$title = clearData($mysql_link, $data['mes_title']);
 	$type = clearData($mysql_link, $data['mes_type'], 'i');
@@ -985,6 +1013,22 @@ function updateMessage($mysql_link, $data, $user) {
 		$msg .= 'Введите текст объявления<br>';
 	}
 
+	if(strlen($title) < 10){
+		$msg .= 'Заголовок слишком короткий<br>';
+	}
+
+	if(strlen($body) < 100){
+		$msg .= 'Текст объявления слишком короткий<br>';
+	}
+
+	if(strlen($price) < 2){
+		$msg .= 'Цена не может содержать только одну цифру<br>';
+	}
+
+	if($price[0] === '0' or $price === '0'){
+		$msg .= 'Цена не должна ровняться нулю или начинаться с нуля<br>';
+	}
+
 	if(!empty($msg)) {
 		return setMessage($msg, 'error');
 	}
@@ -994,7 +1038,6 @@ function updateMessage($mysql_link, $data, $user) {
 								body='$body',
 								town='$town',
 								date=UNIX_TIMESTAMP(),
-								user_id='{$user['user_id']}',
 								category_id='$category',
 								type_id='$type',
 								price='$price',

@@ -255,3 +255,29 @@ input[type="checkbox"]{
 .mini_mess .navigation ul li img{
     height: 50px;
 }
+
+#add_message .form-control-feedback {
+    pointer-events: auto;
+}
+
+#add_message .form-control-feedback:hover {
+    cursor: pointer;
+}
+
+#add_message .radio .form-control-feedback {
+    right: -83px;
+    top: -11px;
+}
+
+#mes_image-styler{
+    overflow: unset !important;
+}
+
+#add_message .mes_categories .form-control-feedback,
+#add_message .mes_image .form-control-feedback {
+    right: -35px;
+}
+
+#add_message .capcha .form-control-feedback {
+    top: 125px;
+}

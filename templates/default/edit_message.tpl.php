@@ -1,9 +1,10 @@
-<form method="post" enctype="multipart/form-data">
+<form id="add_message" method="post" enctype="multipart/form-data">
 	<div class="form-group">
 		<label for="mes_title">Название объявления</label>
-		<input id="mes_title" class="form-control" name="mes_title" type="text" value="<?=$message['title'];?>" placeholder="Название"/><br />
+		<input id="mes_title" class="form-control" name="mes_title" type="text" value="<?=$message['title'];?>" placeholder="Название"/>
+	</div>
 
-		<div class="radio">
+		<div class="radio form-group">
 			<? if(!empty($types) and is_array($types)): ?>
 				<? foreach($types as $type): ?>
 					<label for="mes_type">
@@ -17,10 +18,11 @@
 			<? endif; ?>
 		</div>
 
+	<div class="form-group mes_image">
 		<label for="mes_image">Загрузить изображение</label>
-
 		<div class="img_prev"><img class="img-responsive img-thumbnail" src="<?= THUMBNAILS.$message['img']; ?>" alt=""></div>
-		<input id="mes_image" class="mes_image" name="mes_image" type="file" value=""/><br />
+		<input id="mes_image" class="mes_image" name="mes_image" type="file" value=""/>
+	</div>
 
 		<!-- Аккордеон для дополнительных изображений -->
 		<div class="panel-group" id="additional_img" role="tablist" aria-multiselectable="true">
@@ -54,7 +56,7 @@
 			</div>
 		</div>
 		<!-- Аккордеон для дополнительных изображений -->
-
+	<div class="form-group mes_categories">
 		<label for="mes_categories">Выбрать категорию</label>
 		<select name="mes_categories" id="mes_categories">
 			<option value=""></option>
@@ -72,23 +74,32 @@
 				<? endforeach; ?>
 			<? endif; ?>
 		</select>
-		<br />
+	</div>
 
+	<div class="form-group">
 		<label for="mes_town">Город</label>
-		<input id="mes_town" class="form-control" name="mes_town" type="text" value="<?=$message['town'];?>" placeholder="Город"/><br />
+		<input id="mes_town" class="form-control" name="mes_town" type="text" value="<?=$message['town'];?>" placeholder="Город"/>
+	</div>
 
+	<div class="form-group">
 		<label for="mes_price">Цена</label>
-		<input id="mes_price" class="form-control" type='text' name='mes_price' value="<?=$message['price']?>" placeholder="Цена"><br />
+		<input id="mes_price" class="form-control" type='text' name='mes_price' value="<?=$message['price']?>" placeholder="Цена">
+	</div>
 
+	<div class="form-group">
 		<label for="mes_body">Текст объявления</label>
-		<textarea name="mes_body" class="form-control" id="mes_body" cols="30" rows="10"><?=$message['body']?></textarea><br />
+		<textarea name="mes_body" class="form-control" id="mes_body" cols="30" rows="10"><?=$message['body']?></textarea>
+	</div>
 
+	<div class="form-group capcha">
 		<label for="capcha">Введите код с картинки</label><br />
 		<img src="capcha.php"><br /><br />
 		<input id="capcha" class="form-control" type='text' name='capcha'>
-		<br />
-
-		<input type="submit" name="add_message" class="btn btn-primary" value="Добавить объявление"/>
-		<input type="hidden" name="message_id" value="<?=$message['post_id'];?>"/>
 	</div>
+
+	<div class="form-group">
+		<input type="submit" name="add_message" class="btn btn-primary" value="Добавить объявление"/>
+	</div>
+
+	<input type="hidden" name="message_id" value="<?=$message['post_id'];?>"/>
 </form>
