@@ -67,7 +67,7 @@ $(document).ready(function () {
             mes_title: {
                 validators: {
                     notEmpty: {
-                        message: "Поле 'Название объявления' не может быть пустым"
+                        message: "Это поле не может быть пустым"
                     },
                     stringLength: {
                         message: 'Заголовок слишком короткий',
@@ -104,14 +104,14 @@ $(document).ready(function () {
             mes_town:{
                 validators:{
                     notEmpty:{
-                        message: "Поле 'Город' не может быть пустым"
+                        message: "Это поле не может быть пустым"
                     }
                 }
             },
             mes_price:{
                 validators:{
                     notEmpty:{
-                        message: "Поле 'Цена' не может быть пустым"
+                        message: "Это поле не может быть пустым"
                     },
                     digits: {
                         message: 'В это поле можно вводить только цифры'
@@ -129,7 +129,7 @@ $(document).ready(function () {
             mes_body:{
                 validators:{
                     notEmpty:{
-                        message: "Введите текст объявления"
+                        message: "Это поле не может быть пустым"
                     },
                     stringLength: {
                         message: 'Текст объявления слишком короткий',
@@ -140,7 +140,7 @@ $(document).ready(function () {
             capcha:{
                 validators:{
                     notEmpty:{
-                        message: "Поле 'Капча' не может быть пустым"
+                        message: "Это поле не может быть пустым"
                     }
                 }
             }
