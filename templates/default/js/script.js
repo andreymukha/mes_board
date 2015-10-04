@@ -86,6 +86,11 @@ $(document).ready(function () {
                 validators:{
                     notEmpty:{
                         message: "Загрузите изображение"
+                    },
+                    file: {
+                        extension: 'jpeg,jpg,png,gif',
+                        type: 'image/jpeg,image/pjpeg,image/png,image/x-png,image/gif',
+                        message: 'Неверный тип изображения, можно загружать только .jpg, .jpeg, .png, .gif'
                     }
                 }
             },
