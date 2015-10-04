@@ -920,6 +920,17 @@ function getUserMessages($mysql_link, $user_id){
 	";
 	$result = mysqli_query($mysql_link, $sql);
 	$user_messages = getResult($result);
+	foreach($user_messages as $i => $message){
+		if($message['published'] == 0){
+			$user_messages[$i] += array(
+				'unpublished' => ' unpublished',
+			);
+		}else{
+			$user_messages[$i] += array(
+				'unpublished' => FALSE,
+			);
+		}
+	}
 	return $user_messages;
 }
 
@@ -962,6 +973,13 @@ function getMessage($mysql_link, $id){
 	";
 	$result = mysqli_query($mysql_link, $sql);
 	$message = getResult($result, true);
+
+	if($message['published'] == 0) {
+		$message += array('unpublished' => ' unpublished');
+	}else {
+		$message += array('unpublished' => FALSE);
+	}
+
 	return $message;
 }
 

@@ -131,6 +131,10 @@ html, body, div, h2, ul {
 
 /*Новые стили*/
 
+.content {
+    word-wrap: break-word;
+}
+
 .message {
     border-bottom: 1px dashed gray;
     width: 100%;
@@ -174,34 +178,22 @@ input[type="checkbox"]{
 }
 
 
-.unpublished0 {
-    position: relative;
-    background: rgba(255,0,0,.2);
+.unpublished {
+    background-color: #fff4f4;
 }
 
 .unpublish-mess {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    -webkit-transform: translateY(-50%) rotate(-35deg);
-    -moz-transform: translateY(-50%) rotate(-35deg);
-    -ms-transform: translateY(-50%) rotate(-35deg);
-    -o-transform: translateY(-50%) rotate(-35deg);
-    transform: translateY(-50%) rotate(-35deg);
-    z-index: 0;
-    font-size: 36px;
+    background-color: transparent;
+    color: #d8d8d8;
+    font-family: Impact,"Arial Narrow",Helvetica,sans-serif;
+    font-size: 75px;
     font-weight: bold;
-    width: 100%;
-    /*display: flex;*/
-    /*justify-content: space-between;*/
-    letter-spacing: 12px;
+    height: 0;
+    line-height: 1;
+    overflow: visible;
     text-align: center;
-    color: rgb(255, 255, 255);
-}
-
-.unpublish-mess > i {
-    display: inline-block;
-    font-style: normal;
+    text-transform: uppercase;
+    word-wrap: break-word;
 }
 
 .img_prev{

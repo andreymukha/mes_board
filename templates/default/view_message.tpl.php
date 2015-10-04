@@ -1,9 +1,9 @@
 <? if(!empty($message) and is_array($message)): ?>
-	<div class="message unpublished<?= $message['published']; ?>">
+	<div class="message<?=$message['unpublished'];?>">
 		<div class="content">
-			<? if($message['published'] == 0): ?>
+			<? if($message['unpublished']): ?>
 				<div class="unpublish-mess">
-					<i>U</i><i>N</i><i>P</i><i>U</i><i>B</i><i>L</i><i>I</i><i>S</i><i>H</i><i>E</i><i>D</i>
+					UNPUBLISHED
 				</div>
 			<? endif; ?>
 
