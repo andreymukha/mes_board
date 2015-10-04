@@ -15,7 +15,7 @@ if(!$user or !privileges($mysql_link, $user['role_id'], array('ADD_MESS'))) {
 		}
 
 	}elseif($_SERVER['REQUEST_METHOD'] == 'POST'){
-		$update = updateMessage($mysql_link, $_POST, $user);
+		$update = updateMessage($mysql_link, $_POST);
 		if($update === TRUE){
 			$_SESSION['msg']['message'] = setMessage('Ваше объявление успешно обновлено, оно появится после модерации', 'success');
 			header('Location: '.$_SERVER['PHP_SELF']);
