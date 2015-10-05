@@ -1,5 +1,5 @@
 <?php
-//todo сделать JQ валидацию форм
+
 header('Content-Type: text/html; charset= utf-8');
 
 session_start();
@@ -23,6 +23,7 @@ if(!$action){
 }
 
 $title = getTitle($mysql_link, $action, $user, $types, $categories);
+$main_menu = getMainMenu($mysql_link, $user, $action);
 
 if(file_exists('actions/' . $action . '.inc.php')){
 	include 'actions/' . $action . '.inc.php';

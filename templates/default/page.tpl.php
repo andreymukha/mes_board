@@ -1,8 +1,8 @@
-<div id="wrapper">
+<div id="wrapper" class="container">
 	<div id="header">
 		<h2><a href="<? $_SERVER['SERVER_NAME'] ?>/">Доска объявлений</a></h2>
 
-		<div id="auth">
+		<div class="auth">
 			<? if(empty($user) and !is_array($user)): ?>
 				<a href="?action=login">Вход</a> | <a href="?action=registration">Регистрация</a>
 			<? else: ?>
@@ -11,29 +11,17 @@
 			<? endif; ?>
 		</div>
 	</div>
-	<div id="menu">
-		<ul>
-			<?if($action != 'index' or (isset($_GET['page']) or isset($_GET['type']) or isset($_GET['cat']))):?>
-				<li><a href="/">Главная</a></li>
-			<?else:?>
-				<li>Главная</li>
-			<?endif;?>
-			<? if(!empty($user) and is_array($user)): ?>
-				<? if($add_mess): ?>
-					<li><a href="?action=add_message">Добавить объявление</a></li>
-				<? endif; ?>
-				<li><a href="?action=user_messages">Ваши объявления</a></li>
-			<? endif; ?>
-			<? if($types and is_array($types)): ?>
-				<? foreach($types as $item): ?>
-					<li><a href="?type=<?=$item['type_id'];?>"><?=$item['name']?></a></li>
-				<? endforeach; ?>
-			<? endif; ?>
+
+	<div id="main-menu" class="navbar navbar-default">
+		<ul class="nav navbar-nav">
+			<? foreach($main_menu as $item): ?>
+				<li class="<?=$item['classes'];?>"><a href="<?= $item['link']; ?>"><?= $item['name'] ?></a></li>
+			<? endforeach; ?>
 		</ul>
-		<div style="clear:both"></div>
 	</div>
-	<div id="center">
-		<div id="side_bar">
+
+	<div class="row">
+		<div id="sidebar" class="col-md-3">
 			<div class="block">
 				<h3>Категории</h3>
 				<ul class="categories">
@@ -45,7 +33,7 @@
 								</strong>
 								<ul>
 									<? foreach($category['parent'] as $p_category_id => $p_category): ?>
-										<li>- <a href="?cat=<?=$p_category_id?>"><?=$p_category?></a></li>
+										<li>- <a href="?cat=<?= $p_category_id ?>"><?= $p_category ?></a></li>
 									<? endforeach; ?>
 								</ul>
 							<? endif; ?>
@@ -56,7 +44,6 @@
 
 			<div class="block">
 				<h3>Поиск</h3>
-
 				<form method="GET" action="?action=search">
 					<input name="action" value="search" type="hidden">
 					Поиск<br>
@@ -97,14 +84,13 @@
 				</form>
 			</div>
 		</div>
-		<div id="content" class="<?=$action?>">
+		<div id="content" class="col-md-9 <?= $action ?>">
 			<h3 class="title_page"><?= $title ?></h3>
 			<? if($_SESSION['msg']): ?>
 				<?= $_SESSION['msg']['message']; ?>
 			<? endif; ?>
 			<?= $content ?>
 		</div>
-		<div class="clearfix"></div>
 	</div>
 
 	<div id="footer">

@@ -74,7 +74,7 @@ function getTitle($link, $action, $user, $types, $cat){
 			switch($action){
 				case 'index':
 					//Смотрим используются ли типы, категории или мы просто на главной странице
-					if(empty($_GET) or (isset($_GET['page']) and !isset($_GET['type'])and !isset($_GET['cat']))){
+					if(empty($_GET) or (isset($_GET['page']) and !isset($_GET['type']) and !isset($_GET['cat']))){
 						return 'Главная страница';
 					}elseif(isset($_GET['type'])){
 						foreach($types as $type){
@@ -521,6 +521,91 @@ function get_type($mysql_link){
 	$sql = "SELECT type_id, name FROM mes_types";
 	$result = mysqli_query($mysql_link, $sql);
 	return getResult($result);
+}
+
+/**
+ * @param $mysql_link
+ * @param $user
+ * @param $action
+ *
+ * @return array
+ */
+function getMainMenu($mysql_link, $user, $action){
+	$add_mess = '';
+
+	if(!empty($user) and is_array($user)){
+		$add_mess = privileges($mysql_link, $user['role_id'], array('ADD_MESS'));
+	}
+
+	$menu = array(
+		array(
+			'id' => 'home',
+			'name' => 'Главная',
+			'classes' => '',
+			'link' => '/'
+		),
+		array(
+			'id' => 'add-message',
+			'name' => 'Добавить объявление',
+			'classes' => '',
+			'link' => '?action=add_message'
+		),
+		array(
+			'id' => 'user-messages',
+			'name' => 'Ваши объявления',
+			'classes' => '',
+			'link' => '?action=user_messages'
+		),
+	);
+
+	foreach(get_type($mysql_link) as $i => $type){
+		$menu[] = array(
+				'id' => ($type['type_id'] == 1) ? 'offer' : 'demand',
+				'name' => $type['name'],
+				'classes' => '',
+				'link' => "?type={$type['type_id']}"
+		);
+	}
+
+	foreach($menu as $i => $item){
+		switch($item['id']){
+			case 'home':
+				if($action == 'index' and !isset($_GET['type']) and !isset($_GET['cat'])){
+					$menu[$i]['classes'] = 'active';
+				}
+			break;
+			case 'add-message':
+				if($action == 'add_message'){
+					$menu[$i]['classes'] = 'active';
+				}
+			break;
+			case 'user-messages':
+				if($action == 'user_messages'){
+					$menu[$i]['classes'] = 'active';
+				}
+			break;
+			case 'offer':
+				if($action == 'index' and isset($_GET['type']) and $_GET['type'] == 1){
+					$menu[$i]['classes'] = 'active';
+				}
+			break;
+			case 'demand':
+				if($action == 'index' and isset($_GET['type']) and $_GET['type'] == 2){
+					$menu[$i]['classes'] = 'active';
+				}
+			break;
+		}
+
+		if(empty($user) and !is_array($user)){
+			if($item['id'] == 'add-message' or $item['id'] == 'user-messages'){
+				unset($menu[$i]);
+			}
+		}elseif(!$add_mess and $item['id'] == 'add-message'){
+			unset($menu[$i]);
+		}
+	}
+
+	return array_values($menu);
 }
 
 function getCategories($mysql_link){
