@@ -3,80 +3,25 @@ html, body, div, h2, ul {
     padding: 0;
 }
 
-#wrapper {
-    border: 1px solid #074776;
-    margin: 0 auto;
-    width: 900px;
-    padding-top: 0;
-}
-
 #header {
     height: 100px;
-    width: 100%;
-    background-image: url(../images/header.png);
-    background-repeat: repeat-x;
-    padding-top: 20px;
+    padding: 30px 0 0 100px;
 }
 
-#header h2 {
-    margin-left: 50px;
+#main-menu .navbar-right {
+    margin-right: 0;
 }
 
-#auth {
-    width: 280px;
-    float: right;
-    margin-right: 10px;
-}
-
-#auth a {
-    margin: 10px;
-}
-
-#menu {
-    height: 60px;
-    border-top: 3px solid #c0c0c0;
-    background-image: url(../images/menu.png);
-    background-repeat: repeat-x
-}
-
-#menu ul {
-    height: 60px;
-    float: right
-
-}
-
-#menu li {
-    float: left;
-    padding: 5px;
-    padding-top: 20px;
-    height: 35px;
-    border-right: 1px solid #f0f0f0;
-    list-style: none;
-}
-
-#center {
-    width: 100%;
-}
-
-#side_bar {
-    width: 238px;
-    float: left;
-    padding: 5px;
-}
-
-#side_bar h3 {
+#sidebar h3 {
     text-align: center;
 }
 
-#side_bar ul {
+#sidebar ul {
     margin-left: 25px;
 }
 
-#content {
-    width: 630px;
-    margin-left: 250px;
-    padding: 10px;
-    border-left: 2px solid #c0c0c0;
+.pagination-wrapper {
+    text-align: center;
 }
 
 #footer {
@@ -91,33 +36,23 @@ html, body, div, h2, ul {
     font-size: 10px;
 }
 
-.title_page {
+.page-header h2 {
     text-align: center;
-    font-size: 28px;
-    color: #4e4e5f;
-}
-
-.title_p_mess {
-    background-color: #e6ffe8;
-    border-bottom: 1px solid gray;
 }
 
 .p_mess_cat {
     border-bottom: 1px solid gray;
     text-align: center;
     margin: 10px 10px;
-
 }
 
 .mini_mess {
     margin: 0 5px 5px 0;
     width: 205px;
-    float: left;
 }
 
-.del_mess {
-    color: red;
-    font-weight: bold;
+.thumbnail {
+    margin-right: 10px;
 }
 
 .img {
@@ -136,10 +71,9 @@ html, body, div, h2, ul {
 }
 
 .message {
-    border-bottom: 1px dashed gray;
     width: 100%;
     padding: 5px;
-    margin-bottom: 7px;
+    margin-bottom: 20px;
 }
 
 .links{

@@ -1,6 +1,6 @@
 <? if(!empty($message) and is_array($message)): ?>
 	<div class="message<?=$message['unpublished'];?>">
-		<div class="content">
+		<div class="content clearfix">
 			<? if($message['unpublished']): ?>
 				<div class="unpublish-mess">
 					UNPUBLISHED
@@ -22,7 +22,7 @@
 			<div class="body">
 				<div class="mini_mess">
 
-					<div class="connected-carousels">
+					<div class="connected-carousels pull-left">
 						<div class="stage">
 							<div class="carousel carousel-stage">
 								<ul>
@@ -70,7 +70,6 @@
 			</div>
 		</div>
 
-		<div class="clearfix"></div>
 		<? if($links): ?>
 		<div class="links">
 			<ul>

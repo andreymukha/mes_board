@@ -1,16 +1,13 @@
 <? if(!empty($messages)): ?>
 	<? foreach($messages as $message): ?>
-		<article class="message <?= 'unpublished'.$message['published']; ?>">
-			<div class="content">
-				<? if($message['published'] == 0): ?>
-					<div class="unpublish-mess">
-						<i>U</i><i>N</i><i>P</i><i>U</i><i>B</i><i>L</i><i>I</i><i>S</i><i>H</i><i>E</i><i>D</i>
-					</div>
-				<? endif; ?>
+		<div class="message">
+			<div class="content clearfix">
+				<div class="heading">
+					<h3>
+						<a href="?action=view_message&id=<?= $message['post_id']; ?>"><?= $message['title']; ?></a>
+					</h3>
+				</div>
 
-				<h4 class="title_p_mess">
-					<a href="?action=view_message&id=<?= $message['post_id']; ?>"><?= $message['title']; ?></a>
-				</h4>
 
 				<p class="p_mess_cat">
 					<strong>Категория:</strong> <?= $message['cname']; ?> |
@@ -24,13 +21,12 @@
 					<strong>Автор</strong> <a href="mailto:<?= $message['uemail']; ?>"><?= $message['uname']; ?></a>
 				</p>
 
-				<p>
+				<a href="<?= IMAGES . $message['img']; ?>" class="thumbnail clearfix pull-left group2">
 					<img class="mini_mess" src="<?= THUMBNAILS . $message['img']; ?>">
-					<?= nl2br($message['body']); ?>
-				</p>
+				</a>
+				<?= nl2br($message['body']); ?>
 			</div>
 
-			<div class="clearfix"></div>
 			<div class="links">
 				<ul>
 					<li><a href="?action=edit_message&id=<?=$message['post_id'];?>">Редактировать</a></li>
@@ -38,57 +34,59 @@
 					<li><a href="?action=view_message&id=<?= $message['post_id']; ?>">Подробнее</a></li>
 				</ul>
 			</div>
-		</article>
+		</div>
 	<? endforeach; ?>
 	
 	<? if($pager) : ?>
-		<ul class="pager">
-			<? if($pager['first']) : ?>
-				<li class="first">
-					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=1">Первая</a>
-				</li>
-			<? endif; ?>
-
-			<? if($pager['prev_page']) : ?>
-				<li>
-					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['prev_page'] ?>">&lt;</a>
-				</li>
-			<? endif; ?>
-
-			<? if($pager['previous']) : ?>
-				<? foreach($pager['previous'] as $val) : ?>
-					<li>
-						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $val; ?>"><?= $val; ?></a>
+		<div class="pagination-wrapper">
+			<ul class="pagination">
+				<? if($pager['first']) : ?>
+					<li class="first">
+						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=1">Первая</a>
 					</li>
-				<? endforeach; ?>
-			<? endif; ?>
+				<? endif; ?>
 
-			<? if($pager['current']) : ?>
-				<li>
-					<span><?= $pager['current']; ?></span>
-				</li>
-			<? endif; ?>
-
-			<? if($pager['next']) : ?>
-				<? foreach($pager['next'] as $v) : ?>
+				<? if($pager['prev_page']) : ?>
 					<li>
-						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $v; ?>"><?= $v; ?></a>
+						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['prev_page'] ?>">&lt;</a>
 					</li>
-				<? endforeach; ?>
-			<? endif; ?>
+				<? endif; ?>
 
-			<? if($pager['next_page']) : ?>
-				<li>
-					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['next_page'] ?>">&gt;</a>
-				</li>
-			<? endif; ?>
+				<? if($pager['previous']) : ?>
+					<? foreach($pager['previous'] as $val) : ?>
+						<li>
+							<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $val; ?>"><?= $val; ?></a>
+						</li>
+					<? endforeach; ?>
+				<? endif; ?>
 
-			<? if($pager['last']) : ?>
-				<li class="last">
-					<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['last'] ?>">Последняя</a>
-				</li>
-			<? endif; ?>
-		</ul>
+				<? if($pager['current']) : ?>
+					<li class="active">
+						<span><?= $pager['current']; ?></span>
+					</li>
+				<? endif; ?>
+
+				<? if($pager['next']) : ?>
+					<? foreach($pager['next'] as $v) : ?>
+						<li>
+							<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $v; ?>"><?= $v; ?></a>
+						</li>
+					<? endforeach; ?>
+				<? endif; ?>
+
+				<? if($pager['next_page']) : ?>
+					<li>
+						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['next_page'] ?>">&gt;</a>
+					</li>
+				<? endif; ?>
+
+				<? if($pager['last']) : ?>
+					<li class="last">
+						<a href="?action=index<?= $type; ?><?= $cat; ?>&page=<?= $pager['last'] ?>">Последняя</a>
+					</li>
+				<? endif; ?>
+			</ul>
+		</div>
 	<? endif; ?>
 	
 <? else: ?>

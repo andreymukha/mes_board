@@ -1,16 +1,16 @@
 <? if(!empty($user_messages)): ?>
 	<? foreach($user_messages as $message): ?>
 		<div class="message<?=$message['unpublished'];?>">
-			<div class="content">
+			<div class="content clearfix">
 				<? if($message['unpublished']): ?>
 					<div class="unpublish-mess">
 						UNPUBLISHED
 					</div>
 				<? endif; ?>
 
-				<h4 class="title_p_mess">
+				<h3>
 					<a href="?action=view_message&id=<?= $message['post_id']; ?>"><?= $message['title']; ?></a>
-				</h4>
+				</h3>
 
 				<p class="p_mess_cat">
 					<strong>Категория:</strong> <?= $message['cname']; ?> |
@@ -24,13 +24,12 @@
 					<strong>Автор</strong> <a href="mailto:<?= $message['uemail']; ?>"><?= $message['uname']; ?></a>
 				</p>
 
-				<p>
+				<a href="<?= IMAGES . $message['img']; ?>" class="thumbnail clearfix pull-left group2">
 					<img class="mini_mess" src="<?= THUMBNAILS . $message['img']; ?>">
-					<?= nl2br($message['body']); ?>
-				</p>
+				</a>
+				<?= nl2br($message['body']); ?>
 			</div>
 
-			<div class="clearfix"></div>
 			<div class="links">
 				<ul>
 					<li><a href="?action=edit_message&id=<?=$message['post_id'];?>">Редактировать</a></li>

@@ -29,6 +29,18 @@ $(document).ready(function () {
         }
     }
 
+    //Подключаем колорбокс
+    function colorBoxGroup2() {
+        var colorBoxGroup = $('.group2');
+        if ( colorBoxGroup.length ) {
+            colorBoxGroup.colorbox({
+                rel: false,
+                maxWidth: "100%",
+                maxHeight: "100%",
+            });
+        }
+    }
+
     //Подключаем карусель
     function JCarcusel() {
         $('.jcarousel').jcarousel({
@@ -248,6 +260,7 @@ $(document).ready(function () {
     // Call functions
     $(function() {
         colorBoxGroup();
+        colorBoxGroup2();
         JCarcusel();
     });
 });
