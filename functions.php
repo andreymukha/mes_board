@@ -1020,10 +1020,11 @@ function getUserMessages($mysql_link, $user_id){
 }
 
 function messageIntro($messages){
+	$message_count = 1500;
 	$row = array();
 	foreach($messages as $message){
-		if(strlen($message['body']) > 1000){
-			$message['body'] = substr($message['body'], 0, 1000);
+		if(strlen($message['body']) > $message_count){
+			$message['body'] = substr($message['body'], 0, $message_count);
 			$message['body'] = substr($message['body'], 0, strrpos($message['body'], ' ')).'...';
 		}
 		$row[] = $message;
